@@ -53,4 +53,6 @@ public class MedicineController {
     public String testUMLS(){
         return umlsService.getTgt();
     }
+
+
 }
