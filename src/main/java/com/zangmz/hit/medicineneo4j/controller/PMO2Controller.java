@@ -33,7 +33,7 @@ public class PMO2Controller {
 
     @RequestMapping("getTextRelation")
     public void textRelation(){
-        pmo2Service.writeAllRelation("E:\\zangmz\\Intestinal_liver_tumor_mutation\\relations\\result1");
+        pmo2Service.writeAllRelation("E:\\zangmz\\Intestinal_liver_tumor_mutation\\relations\\result2");
     }
 
 

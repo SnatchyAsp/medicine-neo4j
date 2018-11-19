@@ -62,9 +62,10 @@ public class PMO2Service {
 
                 if (info.length > 10) {
                     Map<String, String> relation = new HashMap<>();
-                    relation.put("head", info[3]);
+                    //过滤出字母数字
+                    relation.put("head", info[3].replaceAll("[^(A-Z0-9a-z)]\\s", ""));
                     relation.put("relation", info[8]);
-                    relation.put("tail", info[10]);
+                    relation.put("tail", info[10].replaceAll("[^(A-Z0-9a-z)]\\s", ""));
                     relation.put("sentence", sentence.substring(info[0].length() + 1));
                     results.add(relation);
                 } else if (!StringUtils.isEmpty(tempString)) {//保存例句
@@ -86,12 +87,13 @@ public class PMO2Service {
     public void writeRelation(File infile) {
         List<Map<String, String>> relationList = getTextRelation(infile);
         for (Map<String, String> relation : relationList) {
-            Long headId = findId("(!?)" +  relation.get("head"));
-            Long tailId = findId("(!?)" + relation.get("tail"));
+            Long headId = findId("(?i)" +  relation.get("head"));
+            Long tailId = findId("(?i)" + relation.get("tail"));
             System.out.println(headId);
             System.out.println(tailId);
+            System.out.println(infile.getName());
             if (headId != null && tailId != null){
-                klassRep.writeRelation(headId, tailId, relation.get("relation"));
+                klassRep.writeRelation(headId, tailId, relation.get("relation"), relation.get("sentence"));
             }
 
 

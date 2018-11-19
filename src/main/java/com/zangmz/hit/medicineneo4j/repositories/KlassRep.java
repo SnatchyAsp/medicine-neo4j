@@ -20,6 +20,6 @@ public interface KlassRep extends Neo4jRepository<Klass, Long> {
     @Query("MATCH (m:domain_synonym)-[:SY]-(n:`class`) WHERE m.term=~{word} RETURN ID(n) limit 1")
     Long getSyKlass(@Param("word") String word);
 
-    @Query("start a =node({headId}),b=node({tailId}) create (a)-[n:rel]->(b)return n")
-    Long writeRelation(@Param("headId") Long headId, @Param("tailId") Long tailId, @Param("relation") String relation);
+    @Query("start a =node({headId}),b=node({tailId}) create (a)-[n:umls_rel {relation:{relation}, sentence:{sentence}}]->(b)  return n")
+    Long writeRelation(@Param("headId") Long headId, @Param("tailId") Long tailId, @Param("relation") String relation, @Param("sentence") String sentence);
 }
