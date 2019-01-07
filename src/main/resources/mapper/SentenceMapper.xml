@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zangmz.hit.medicineneo4j.mapper.SentenceMapper" >
+  <resultMap id="BaseResultMap" type="com.zangmz.hit.medicineneo4j.domain.Sentence" >
+    <id column="SENTENCE_ID" property="sentenceId" jdbcType="INTEGER" />
+    <result column="PMID" property="pmid" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="SECTION_HEADER" property="sectionHeader" jdbcType="VARCHAR" />
+    <result column="SENTENCE" property="sentence" jdbcType="VARCHAR" />
+    <result column="NORMALIZED_SECTION_HEADER" property="normalizedSectionHeader" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SENTENCE_ID, PMID, TYPE, NUMBER, SECTION_HEADER, SENTENCE, NORMALIZED_SECTION_HEADER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sentence
+    where SENTENCE_ID = #{sentenceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sentence
+    where SENTENCE_ID = #{sentenceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zangmz.hit.medicineneo4j.domain.Sentence" >
+    insert into sentence (SENTENCE_ID, PMID, TYPE, 
+      NUMBER, SECTION_HEADER, SENTENCE, 
+      NORMALIZED_SECTION_HEADER)
+    values (#{sentenceId,jdbcType=INTEGER}, #{pmid,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{sectionHeader,jdbcType=VARCHAR}, #{sentence,jdbcType=VARCHAR}, 
+      #{normalizedSectionHeader,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zangmz.hit.medicineneo4j.domain.Sentence" >
+    insert into sentence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sentenceId != null" >
+        SENTENCE_ID,
+      </if>
+      <if test="pmid != null" >
+        PMID,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="sectionHeader != null" >
+        SECTION_HEADER,
+      </if>
+      <if test="sentence != null" >
+        SENTENCE,
+      </if>
+      <if test="normalizedSectionHeader != null" >
+        NORMALIZED_SECTION_HEADER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sentenceId != null" >
+        #{sentenceId,jdbcType=INTEGER},
+      </if>
+      <if test="pmid != null" >
+        #{pmid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="sectionHeader != null" >
+        #{sectionHeader,jdbcType=VARCHAR},
+      </if>
+      <if test="sentence != null" >
+        #{sentence,jdbcType=VARCHAR},
+      </if>
+      <if test="normalizedSectionHeader != null" >
+        #{normalizedSectionHeader,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zangmz.hit.medicineneo4j.domain.Sentence" >
+    update sentence
+    <set >
+      <if test="pmid != null" >
+        PMID = #{pmid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="sectionHeader != null" >
+        SECTION_HEADER = #{sectionHeader,jdbcType=VARCHAR},
+      </if>
+      <if test="sentence != null" >
+        SENTENCE = #{sentence,jdbcType=VARCHAR},
+      </if>
+      <if test="normalizedSectionHeader != null" >
+        NORMALIZED_SECTION_HEADER = #{normalizedSectionHeader,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SENTENCE_ID = #{sentenceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zangmz.hit.medicineneo4j.domain.Sentence" >
+    update sentence
+    set PMID = #{pmid,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      NUMBER = #{number,jdbcType=INTEGER},
+      SECTION_HEADER = #{sectionHeader,jdbcType=VARCHAR},
+      SENTENCE = #{sentence,jdbcType=VARCHAR},
+      NORMALIZED_SECTION_HEADER = #{normalizedSectionHeader,jdbcType=VARCHAR}
+    where SENTENCE_ID = #{sentenceId,jdbcType=INTEGER}
+  </update>
+</mapper>

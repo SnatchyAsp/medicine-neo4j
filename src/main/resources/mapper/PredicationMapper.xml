@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zangmz.hit.medicineneo4j.mapper.PredicationMapper" >
+  <resultMap id="BaseResultMap" type="com.zangmz.hit.medicineneo4j.domain.Predication" >
+    <id column="PREDICATION_ID" property="predicationId" jdbcType="INTEGER" />
+    <result column="SENTENCE_ID" property="sentenceId" jdbcType="INTEGER" />
+    <result column="PMID" property="pmid" jdbcType="VARCHAR" />
+    <result column="PREDICATE" property="predicate" jdbcType="VARCHAR" />
+    <result column="SUBJECT_CUI" property="subjectCui" jdbcType="VARCHAR" />
+    <result column="SUBJECT_NAME" property="subjectName" jdbcType="VARCHAR" />
+    <result column="SUBJECT_SEMTYPE" property="subjectSemtype" jdbcType="VARCHAR" />
+    <result column="SUBJECT_NOVELTY" property="subjectNovelty" jdbcType="BIT" />
+    <result column="OBJECT_CUI" property="objectCui" jdbcType="VARCHAR" />
+    <result column="OBJECT_NAME" property="objectName" jdbcType="VARCHAR" />
+    <result column="OBJECT_SEMTYPE" property="objectSemtype" jdbcType="VARCHAR" />
+    <result column="OBJECT_NOVELTY" property="objectNovelty" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PREDICATION_ID, SENTENCE_ID, PMID, PREDICATE, SUBJECT_CUI, SUBJECT_NAME, SUBJECT_SEMTYPE, 
+    SUBJECT_NOVELTY, OBJECT_CUI, OBJECT_NAME, OBJECT_SEMTYPE, OBJECT_NOVELTY
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from predication
+    where PREDICATION_ID = #{predicationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from predication
+    where PREDICATION_ID = #{predicationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zangmz.hit.medicineneo4j.domain.Predication" >
+    insert into predication (PREDICATION_ID, SENTENCE_ID, PMID, 
+      PREDICATE, SUBJECT_CUI, SUBJECT_NAME, 
+      SUBJECT_SEMTYPE, SUBJECT_NOVELTY, OBJECT_CUI, 
+      OBJECT_NAME, OBJECT_SEMTYPE, OBJECT_NOVELTY
+      )
+    values (#{predicationId,jdbcType=INTEGER}, #{sentenceId,jdbcType=INTEGER}, #{pmid,jdbcType=VARCHAR}, 
+      #{predicate,jdbcType=VARCHAR}, #{subjectCui,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, 
+      #{subjectSemtype,jdbcType=VARCHAR}, #{subjectNovelty,jdbcType=BIT}, #{objectCui,jdbcType=VARCHAR}, 
+      #{objectName,jdbcType=VARCHAR}, #{objectSemtype,jdbcType=VARCHAR}, #{objectNovelty,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zangmz.hit.medicineneo4j.domain.Predication" >
+    insert into predication
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="predicationId != null" >
+        PREDICATION_ID,
+      </if>
+      <if test="sentenceId != null" >
+        SENTENCE_ID,
+      </if>
+      <if test="pmid != null" >
+        PMID,
+      </if>
+      <if test="predicate != null" >
+        PREDICATE,
+      </if>
+      <if test="subjectCui != null" >
+        SUBJECT_CUI,
+      </if>
+      <if test="subjectName != null" >
+        SUBJECT_NAME,
+      </if>
+      <if test="subjectSemtype != null" >
+        SUBJECT_SEMTYPE,
+      </if>
+      <if test="subjectNovelty != null" >
+        SUBJECT_NOVELTY,
+      </if>
+      <if test="objectCui != null" >
+        OBJECT_CUI,
+      </if>
+      <if test="objectName != null" >
+        OBJECT_NAME,
+      </if>
+      <if test="objectSemtype != null" >
+        OBJECT_SEMTYPE,
+      </if>
+      <if test="objectNovelty != null" >
+        OBJECT_NOVELTY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="predicationId != null" >
+        #{predicationId,jdbcType=INTEGER},
+      </if>
+      <if test="sentenceId != null" >
+        #{sentenceId,jdbcType=INTEGER},
+      </if>
+      <if test="pmid != null" >
+        #{pmid,jdbcType=VARCHAR},
+      </if>
+      <if test="predicate != null" >
+        #{predicate,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectCui != null" >
+        #{subjectCui,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectSemtype != null" >
+        #{subjectSemtype,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectNovelty != null" >
+        #{subjectNovelty,jdbcType=BIT},
+      </if>
+      <if test="objectCui != null" >
+        #{objectCui,jdbcType=VARCHAR},
+      </if>
+      <if test="objectName != null" >
+        #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectSemtype != null" >
+        #{objectSemtype,jdbcType=VARCHAR},
+      </if>
+      <if test="objectNovelty != null" >
+        #{objectNovelty,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zangmz.hit.medicineneo4j.domain.Predication" >
+    update predication
+    <set >
+      <if test="sentenceId != null" >
+        SENTENCE_ID = #{sentenceId,jdbcType=INTEGER},
+      </if>
+      <if test="pmid != null" >
+        PMID = #{pmid,jdbcType=VARCHAR},
+      </if>
+      <if test="predicate != null" >
+        PREDICATE = #{predicate,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectCui != null" >
+        SUBJECT_CUI = #{subjectCui,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectSemtype != null" >
+        SUBJECT_SEMTYPE = #{subjectSemtype,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectNovelty != null" >
+        SUBJECT_NOVELTY = #{subjectNovelty,jdbcType=BIT},
+      </if>
+      <if test="objectCui != null" >
+        OBJECT_CUI = #{objectCui,jdbcType=VARCHAR},
+      </if>
+      <if test="objectName != null" >
+        OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectSemtype != null" >
+        OBJECT_SEMTYPE = #{objectSemtype,jdbcType=VARCHAR},
+      </if>
+      <if test="objectNovelty != null" >
+        OBJECT_NOVELTY = #{objectNovelty,jdbcType=BIT},
+      </if>
+    </set>
+    where PREDICATION_ID = #{predicationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zangmz.hit.medicineneo4j.domain.Predication" >
+    update predication
+    set SENTENCE_ID = #{sentenceId,jdbcType=INTEGER},
+      PMID = #{pmid,jdbcType=VARCHAR},
+      PREDICATE = #{predicate,jdbcType=VARCHAR},
+      SUBJECT_CUI = #{subjectCui,jdbcType=VARCHAR},
+      SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      SUBJECT_SEMTYPE = #{subjectSemtype,jdbcType=VARCHAR},
+      SUBJECT_NOVELTY = #{subjectNovelty,jdbcType=BIT},
+      OBJECT_CUI = #{objectCui,jdbcType=VARCHAR},
+      OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      OBJECT_SEMTYPE = #{objectSemtype,jdbcType=VARCHAR},
+      OBJECT_NOVELTY = #{objectNovelty,jdbcType=BIT}
+    where PREDICATION_ID = #{predicationId,jdbcType=INTEGER}
+  </update>
+</mapper>

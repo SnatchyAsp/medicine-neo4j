@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zangmz.hit.medicineneo4j.mapper.PredicationAuxMapper" >
+  <resultMap id="BaseResultMap" type="com.zangmz.hit.medicineneo4j.domain.PredicationAux" >
+    <id column="PREDICATION_AUX_ID" property="predicationAuxId" jdbcType="INTEGER" />
+    <result column="PREDICATION_ID" property="predicationId" jdbcType="INTEGER" />
+    <result column="SUBJECT_TEXT" property="subjectText" jdbcType="VARCHAR" />
+    <result column="SUBJECT_DIST" property="subjectDist" jdbcType="INTEGER" />
+    <result column="SUBJECT_MAXDIST" property="subjectMaxdist" jdbcType="INTEGER" />
+    <result column="SUBJECT_START_INDEX" property="subjectStartIndex" jdbcType="INTEGER" />
+    <result column="SUBJECT_END_INDEX" property="subjectEndIndex" jdbcType="INTEGER" />
+    <result column="SUBJECT_SCORE" property="subjectScore" jdbcType="INTEGER" />
+    <result column="INDICATOR_TYPE" property="indicatorType" jdbcType="VARCHAR" />
+    <result column="PREDICATE_START_INDEX" property="predicateStartIndex" jdbcType="INTEGER" />
+    <result column="PREDICATE_END_INDEX" property="predicateEndIndex" jdbcType="INTEGER" />
+    <result column="OBJECT_TEXT" property="objectText" jdbcType="VARCHAR" />
+    <result column="OBJECT_DIST" property="objectDist" jdbcType="INTEGER" />
+    <result column="OBJECT_MAXDIST" property="objectMaxdist" jdbcType="INTEGER" />
+    <result column="OBJECT_START_INDEX" property="objectStartIndex" jdbcType="INTEGER" />
+    <result column="OBJECT_END_INDEX" property="objectEndIndex" jdbcType="INTEGER" />
+    <result column="OBJECT_SCORE" property="objectScore" jdbcType="INTEGER" />
+    <result column="CURR_TIMESTAMP" property="currTimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PREDICATION_AUX_ID, PREDICATION_ID, SUBJECT_TEXT, SUBJECT_DIST, SUBJECT_MAXDIST, 
+    SUBJECT_START_INDEX, SUBJECT_END_INDEX, SUBJECT_SCORE, INDICATOR_TYPE, PREDICATE_START_INDEX, 
+    PREDICATE_END_INDEX, OBJECT_TEXT, OBJECT_DIST, OBJECT_MAXDIST, OBJECT_START_INDEX, 
+    OBJECT_END_INDEX, OBJECT_SCORE, CURR_TIMESTAMP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from predication_aux
+    where PREDICATION_AUX_ID = #{predicationAuxId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPredicationId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from predication_aux
+    where PREDICATION_ID = #{predicationAuxId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from predication_aux
+    where PREDICATION_AUX_ID = #{predicationAuxId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zangmz.hit.medicineneo4j.domain.PredicationAux" >
+    insert into predication_aux (PREDICATION_AUX_ID, PREDICATION_ID, 
+      SUBJECT_TEXT, SUBJECT_DIST, SUBJECT_MAXDIST, 
+      SUBJECT_START_INDEX, SUBJECT_END_INDEX, SUBJECT_SCORE, 
+      INDICATOR_TYPE, PREDICATE_START_INDEX, PREDICATE_END_INDEX, 
+      OBJECT_TEXT, OBJECT_DIST, OBJECT_MAXDIST, 
+      OBJECT_START_INDEX, OBJECT_END_INDEX, OBJECT_SCORE, 
+      CURR_TIMESTAMP)
+    values (#{predicationAuxId,jdbcType=INTEGER}, #{predicationId,jdbcType=INTEGER}, 
+      #{subjectText,jdbcType=VARCHAR}, #{subjectDist,jdbcType=INTEGER}, #{subjectMaxdist,jdbcType=INTEGER}, 
+      #{subjectStartIndex,jdbcType=INTEGER}, #{subjectEndIndex,jdbcType=INTEGER}, #{subjectScore,jdbcType=INTEGER}, 
+      #{indicatorType,jdbcType=VARCHAR}, #{predicateStartIndex,jdbcType=INTEGER}, #{predicateEndIndex,jdbcType=INTEGER}, 
+      #{objectText,jdbcType=VARCHAR}, #{objectDist,jdbcType=INTEGER}, #{objectMaxdist,jdbcType=INTEGER}, 
+      #{objectStartIndex,jdbcType=INTEGER}, #{objectEndIndex,jdbcType=INTEGER}, #{objectScore,jdbcType=INTEGER}, 
+      #{currTimestamp,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zangmz.hit.medicineneo4j.domain.PredicationAux" >
+    insert into predication_aux
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="predicationAuxId != null" >
+        PREDICATION_AUX_ID,
+      </if>
+      <if test="predicationId != null" >
+        PREDICATION_ID,
+      </if>
+      <if test="subjectText != null" >
+        SUBJECT_TEXT,
+      </if>
+      <if test="subjectDist != null" >
+        SUBJECT_DIST,
+      </if>
+      <if test="subjectMaxdist != null" >
+        SUBJECT_MAXDIST,
+      </if>
+      <if test="subjectStartIndex != null" >
+        SUBJECT_START_INDEX,
+      </if>
+      <if test="subjectEndIndex != null" >
+        SUBJECT_END_INDEX,
+      </if>
+      <if test="subjectScore != null" >
+        SUBJECT_SCORE,
+      </if>
+      <if test="indicatorType != null" >
+        INDICATOR_TYPE,
+      </if>
+      <if test="predicateStartIndex != null" >
+        PREDICATE_START_INDEX,
+      </if>
+      <if test="predicateEndIndex != null" >
+        PREDICATE_END_INDEX,
+      </if>
+      <if test="objectText != null" >
+        OBJECT_TEXT,
+      </if>
+      <if test="objectDist != null" >
+        OBJECT_DIST,
+      </if>
+      <if test="objectMaxdist != null" >
+        OBJECT_MAXDIST,
+      </if>
+      <if test="objectStartIndex != null" >
+        OBJECT_START_INDEX,
+      </if>
+      <if test="objectEndIndex != null" >
+        OBJECT_END_INDEX,
+      </if>
+      <if test="objectScore != null" >
+        OBJECT_SCORE,
+      </if>
+      <if test="currTimestamp != null" >
+        CURR_TIMESTAMP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="predicationAuxId != null" >
+        #{predicationAuxId,jdbcType=INTEGER},
+      </if>
+      <if test="predicationId != null" >
+        #{predicationId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectText != null" >
+        #{subjectText,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectDist != null" >
+        #{subjectDist,jdbcType=INTEGER},
+      </if>
+      <if test="subjectMaxdist != null" >
+        #{subjectMaxdist,jdbcType=INTEGER},
+      </if>
+      <if test="subjectStartIndex != null" >
+        #{subjectStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="subjectEndIndex != null" >
+        #{subjectEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="subjectScore != null" >
+        #{subjectScore,jdbcType=INTEGER},
+      </if>
+      <if test="indicatorType != null" >
+        #{indicatorType,jdbcType=VARCHAR},
+      </if>
+      <if test="predicateStartIndex != null" >
+        #{predicateStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="predicateEndIndex != null" >
+        #{predicateEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectText != null" >
+        #{objectText,jdbcType=VARCHAR},
+      </if>
+      <if test="objectDist != null" >
+        #{objectDist,jdbcType=INTEGER},
+      </if>
+      <if test="objectMaxdist != null" >
+        #{objectMaxdist,jdbcType=INTEGER},
+      </if>
+      <if test="objectStartIndex != null" >
+        #{objectStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectEndIndex != null" >
+        #{objectEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectScore != null" >
+        #{objectScore,jdbcType=INTEGER},
+      </if>
+      <if test="currTimestamp != null" >
+        #{currTimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zangmz.hit.medicineneo4j.domain.PredicationAux" >
+    update predication_aux
+    <set >
+      <if test="predicationId != null" >
+        PREDICATION_ID = #{predicationId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectText != null" >
+        SUBJECT_TEXT = #{subjectText,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectDist != null" >
+        SUBJECT_DIST = #{subjectDist,jdbcType=INTEGER},
+      </if>
+      <if test="subjectMaxdist != null" >
+        SUBJECT_MAXDIST = #{subjectMaxdist,jdbcType=INTEGER},
+      </if>
+      <if test="subjectStartIndex != null" >
+        SUBJECT_START_INDEX = #{subjectStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="subjectEndIndex != null" >
+        SUBJECT_END_INDEX = #{subjectEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="subjectScore != null" >
+        SUBJECT_SCORE = #{subjectScore,jdbcType=INTEGER},
+      </if>
+      <if test="indicatorType != null" >
+        INDICATOR_TYPE = #{indicatorType,jdbcType=VARCHAR},
+      </if>
+      <if test="predicateStartIndex != null" >
+        PREDICATE_START_INDEX = #{predicateStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="predicateEndIndex != null" >
+        PREDICATE_END_INDEX = #{predicateEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectText != null" >
+        OBJECT_TEXT = #{objectText,jdbcType=VARCHAR},
+      </if>
+      <if test="objectDist != null" >
+        OBJECT_DIST = #{objectDist,jdbcType=INTEGER},
+      </if>
+      <if test="objectMaxdist != null" >
+        OBJECT_MAXDIST = #{objectMaxdist,jdbcType=INTEGER},
+      </if>
+      <if test="objectStartIndex != null" >
+        OBJECT_START_INDEX = #{objectStartIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectEndIndex != null" >
+        OBJECT_END_INDEX = #{objectEndIndex,jdbcType=INTEGER},
+      </if>
+      <if test="objectScore != null" >
+        OBJECT_SCORE = #{objectScore,jdbcType=INTEGER},
+      </if>
+      <if test="currTimestamp != null" >
+        CURR_TIMESTAMP = #{currTimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where PREDICATION_AUX_ID = #{predicationAuxId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zangmz.hit.medicineneo4j.domain.PredicationAux" >
+    update predication_aux
+    set PREDICATION_ID = #{predicationId,jdbcType=INTEGER},
+      SUBJECT_TEXT = #{subjectText,jdbcType=VARCHAR},
+      SUBJECT_DIST = #{subjectDist,jdbcType=INTEGER},
+      SUBJECT_MAXDIST = #{subjectMaxdist,jdbcType=INTEGER},
+      SUBJECT_START_INDEX = #{subjectStartIndex,jdbcType=INTEGER},
+      SUBJECT_END_INDEX = #{subjectEndIndex,jdbcType=INTEGER},
+      SUBJECT_SCORE = #{subjectScore,jdbcType=INTEGER},
+      INDICATOR_TYPE = #{indicatorType,jdbcType=VARCHAR},
+      PREDICATE_START_INDEX = #{predicateStartIndex,jdbcType=INTEGER},
+      PREDICATE_END_INDEX = #{predicateEndIndex,jdbcType=INTEGER},
+      OBJECT_TEXT = #{objectText,jdbcType=VARCHAR},
+      OBJECT_DIST = #{objectDist,jdbcType=INTEGER},
+      OBJECT_MAXDIST = #{objectMaxdist,jdbcType=INTEGER},
+      OBJECT_START_INDEX = #{objectStartIndex,jdbcType=INTEGER},
+      OBJECT_END_INDEX = #{objectEndIndex,jdbcType=INTEGER},
+      OBJECT_SCORE = #{objectScore,jdbcType=INTEGER},
+      CURR_TIMESTAMP = #{currTimestamp,jdbcType=TIMESTAMP}
+    where PREDICATION_AUX_ID = #{predicationAuxId,jdbcType=INTEGER}
+  </update>
+</mapper>
