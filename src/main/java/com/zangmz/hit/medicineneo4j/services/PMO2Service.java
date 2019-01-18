@@ -26,6 +26,7 @@ public class PMO2Service {
     @Resource
     private InstanceRep instanceRep;
 
+
     @Transactional(readOnly = true)
     public Klass getKlassByName(String name) {
         Klass klass = klassRep.getKlassbyName(name);
@@ -47,19 +48,49 @@ public class PMO2Service {
 //        return instance;
 //    }
 
+    public void writeRelationPred(File relationText) {
+        List<Map<String, String>> results = new ArrayList<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(relationText));
+            String tempString = "";
+            while((tempString = reader.readLine())!= null){
+                String info[] = tempString.split("\\|");
+                Map<String, String> relation = new HashMap<>();
+                //过滤出字母数字
+                relation.put("head", info[1].replaceAll("[^(A-Z0-9a-z\\s)]", ""));
+                relation.put("relation", info[4]);
+                relation.put("tail", info[3].replaceAll("[^(A-Z0-9a-z\\s)]", ""));
+                relation.put("sentence", info[5]);
+                relation.put("pmid", info[6]);
+                results.add(relation);
+            }
+            System.out.println(results);
+            for (Map<String, String> relation : results) {
+                Long headId = findId("(?i)" + relation.get("head"));
+                Long tailId = findId("(?i)" + relation.get("tail"));
+                System.out.println(headId);
+                System.out.println(tailId);
+                if (headId != null && tailId != null) {
+                    klassRep.writeRelationPmid(headId, tailId, relation.get("relation"), relation.get("sentence"), relation.get("pmid"));
+                }
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Map<String, String>> getTextRelation(File relationText) {
         List<Map<String, String>> results = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(relationText));
-
-
             String tempString = "";
             String sentence = "";
             while ((tempString = reader.readLine()) != null) {
                 String info[] = tempString.split("\\|");
-
-
                 if (info.length > 10) {
                     Map<String, String> relation = new HashMap<>();
                     //过滤出字母数字
@@ -87,12 +118,12 @@ public class PMO2Service {
     public void writeRelation(File infile) {
         List<Map<String, String>> relationList = getTextRelation(infile);
         for (Map<String, String> relation : relationList) {
-            Long headId = findId("(?i)" +  relation.get("head"));
+            Long headId = findId("(?i)" + relation.get("head"));
             Long tailId = findId("(?i)" + relation.get("tail"));
             System.out.println(headId);
             System.out.println(tailId);
             System.out.println(infile.getName());
-            if (headId != null && tailId != null){
+            if (headId != null && tailId != null) {
                 klassRep.writeRelation(headId, tailId, relation.get("relation"), relation.get("sentence"));
             }
 
@@ -101,11 +132,11 @@ public class PMO2Service {
 
     }
 
-    public void writeAllRelation(String path){
+    public void writeAllRelation(String path) {
         File file = new File(path);
-        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
-        for(File f:fs){					//遍历File[]数组
-            if(!f.isDirectory()){
+        File[] fs = file.listFiles();    //遍历path下的文件和目录，放在File数组中
+        for (File f : fs) {                    //遍历File[]数组
+            if (!f.isDirectory()) {
                 writeRelation(f);
             }
 
@@ -113,13 +144,13 @@ public class PMO2Service {
 
     }
 
-    private Long findId(String word){
+    private Long findId(String word) {
         Long id = klassRep.getKlassIdbyName(word);
-        if (id == null){
+        if (id == null) {
             id = klassRep.getSyKlass(word);
-            if(id == null){
+            if (id == null) {
                 id = instanceRep.getInstanceIdbyName(word);
-                if (id == null){
+                if (id == null) {
                     id = instanceRep.getSyInstance(word);
                 }
             }

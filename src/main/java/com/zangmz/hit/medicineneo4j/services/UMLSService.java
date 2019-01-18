@@ -32,6 +32,10 @@ public class UMLSService {
 
     RestTicketClient restTicketClient = new RestTicketClient();
 
+    public void getRelationPred(){
+
+    }
+
     public String getTgt(){
         return restTicketClient.getTgt();
     }

@@ -22,4 +22,8 @@ public interface KlassRep extends Neo4jRepository<Klass, Long> {
 
     @Query("start a =node({headId}),b=node({tailId}) create (a)-[n:umls_rel {relation:{relation}, sentence:{sentence}}]->(b)  return n")
     Long writeRelation(@Param("headId") Long headId, @Param("tailId") Long tailId, @Param("relation") String relation, @Param("sentence") String sentence);
+
+    @Query("start a =node({headId}),b=node({tailId}) create (a)-[n:umls_pcnn {relation:{relation}, pmid:{pmid}, sentence:{sentence}}]->(b)  return n")
+    Long writeRelationPmid(@Param("headId") Long headId, @Param("tailId") Long tailId, @Param("relation") String relation, @Param("sentence") String sentence, @Param("pmid") String pmid);
+
 }

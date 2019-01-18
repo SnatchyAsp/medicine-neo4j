@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.File;
 
 @RestController
 @RequestMapping("/pmo2/")
@@ -34,6 +35,11 @@ public class PMO2Controller {
     @RequestMapping("getTextRelation")
     public void textRelation(){
         pmo2Service.writeAllRelation("E:\\zangmz\\Intestinal_liver_tumor_mutation\\full_relations\\result\\result11969_copy");
+    }
+
+    @RequestMapping("getRelationPred")
+    public void getRelationPred(){
+        pmo2Service.writeRelationPred(new File("E:\\zangmz\\relation_extract\\pred_text.txt"));
     }
 
 
