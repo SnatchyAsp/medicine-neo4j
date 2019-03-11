@@ -6,13 +6,11 @@ import com.zangmz.hit.medicineneo4j.mapper.PredicationAuxMapper;
 import com.zangmz.hit.medicineneo4j.mapper.PredicationMapper;
 import com.zangmz.hit.medicineneo4j.mapper.SentenceMapper;
 import com.zangmz.hit.medicineneo4j.utils.RestTicketClient;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,30 +30,111 @@ public class UMLSService {
 
     RestTicketClient restTicketClient = new RestTicketClient();
 
-    public void getRelationPred(){
+    public void getRelationPred() {
 
     }
 
-    public String getTgt(){
+    public String getTgt() {
         return restTicketClient.getTgt();
     }
 
-    public Predication getPredicationById(int id){
+    public Predication getPredicationById(int id) {
         return predicationMapper.selectByPrimaryKey(id);
     }
 
-    public Boolean checkRelation(List<String> relationList, String relation){
+    public Boolean checkRelation(List<String> relationList, String relation) {
         Boolean flag = false;
-        for (String r: relationList){
-            if (r.equals(relation)){
+        for (String r : relationList) {
+            if (r.equals(relation)) {
                 flag = true;
             }
         }
         return flag;
     }
 
+    public void getRelationByType(String path) {
+        File relFile = new File(path);
+        BufferedReader reader;
 
-    public void getPredicationBatch(int train_start, int train_finish, int test_start, int test_finish){
+        int rel_num = 0;
+        Map<String, Integer> relationMap = new HashMap<>();
+        relationMap.put("NA", rel_num);
+        rel_num++;
+
+
+        try {
+            reader = new BufferedReader(new FileReader(relFile));
+            String tempString = null;
+
+            //结果集
+            List<String> relationList = new ArrayList<>();
+            //关系表
+            while ((tempString = reader.readLine()) != null) {
+                if (tempString.split(":").length > 1) {
+                    String r = tempString.split(":")[0];
+                    relationList.add(r);
+                    relationMap.put(r ,rel_num);
+                    rel_num++;
+                }
+
+            }
+
+            //训练集 测试集
+            List<RelationInput> relationInputList = new ArrayList<>();
+            List<RelationInput> relationInputListTest = new ArrayList<>();
+
+            StringBuffer sb = new StringBuffer();
+
+            for (String r:relationList){
+                int relNumber = 0;
+                int relNumberTest = 0;
+                int cursor = 43000;
+                while(relNumber < 500 && cursor < 243000 ){
+                    RelationInput relationInput = getRelation(cursor);
+                    if ((relationInput != null)) {
+                        if (relationInput.getRelation().equals(r)) {
+                            relationInputList.add(relationInput);
+                            relNumber++;
+                        }
+                    }
+                    cursor++;
+                    System.out.println(r + " trainNumber" + relNumber);
+                }
+                sb.append(r + ": train " + relNumber +" ");
+                while(relNumberTest < 100 && cursor < 343000){
+                    RelationInput relationInput = getRelation(cursor);
+                    if ((relationInput != null)) {
+                        if (relationInput.getRelation().equals(r)) {
+                            relationInputListTest.add(relationInput);
+                            relNumberTest++;
+                        }
+                    }
+                    System.out.println(r + " testNumber" + relNumberTest);
+                    cursor++;
+                }
+                sb.append("test " + relNumberTest + "\n");
+
+            }
+            writeJson(relationMap, "E:\\zangmz\\search_type_result\\rel2id.json");
+            writeJson(relationInputList, "E:\\zangmz\\search_type_result\\train.json");
+            writeJson(relationInputListTest, "E:\\zangmz\\search_type_result\\test.json");
+            writeText(sb.toString(), "E:\\zangmz\\search_type_result\\text.txt");
+
+
+            System.out.println(sb);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+    public void getPredicationBatch(int train_start, int train_finish, int test_start, int test_finish) {
         int train_num = 0;
         int test_num = 0;
         int rel_num = 0;
@@ -70,15 +149,15 @@ public class UMLSService {
 
         List<RelationInput> relationInputList = new ArrayList<>();
 
-        while(num < train_finish){
-            num ++;
+        while (num < train_finish) {
+            num++;
             RelationInput relationInput = getRelation(num);
-            if ((relationInput != null)){
+            if ((relationInput != null)) {
                 relationInputList.add(relationInput);
                 train_num++;
 
 
-                if (!checkRelation(relationList, relationInput.getRelation())){
+                if (!checkRelation(relationList, relationInput.getRelation())) {
                     relationMap.put(relationInput.getRelation(), rel_num);
                     relationList.add(relationInput.getRelation());
                     System.out.println(relationInput);
@@ -89,13 +168,13 @@ public class UMLSService {
 
         int num1 = test_start;
         List<RelationInput> relationInputTestList = new ArrayList<>();
-        while(num1 < test_finish){
-            num1 ++;
+        while (num1 < test_finish) {
+            num1++;
             RelationInput relationInput = getRelation(num1);
-            if ((relationInput != null)){
+            if ((relationInput != null)) {
                 relationInputTestList.add(relationInput);
                 test_num++;
-                if (!checkRelation(relationList, relationInput.getRelation())){
+                if (!checkRelation(relationList, relationInput.getRelation())) {
                     relationMap.put(relationInput.getRelation(), rel_num);
                     relationList.add(relationInput.getRelation());
                     System.out.println(relationInput);
@@ -108,7 +187,7 @@ public class UMLSService {
         writeJson(relationInputTestList, "E:\\zangmz\\search_result\\test.json");
         writeJson(relationMap, "E:\\zangmz\\search_result\\rel2id.json");
 
-        String text = "train number: "+ train_num + "\n" + "test number: " + test_num + "\n"+
+        String text = "train number: " + train_num + "\n" + "test number: " + test_num + "\n" +
                 "rel number: " + rel_num;
 
         writeParamJson(text, "E:\\zangmz\\search_result\\text.txt");
@@ -118,14 +197,25 @@ public class UMLSService {
 
     }
 
-    public void writeText(List<RelationInput> list, String path, Map<String, Integer> relationMap){
+    public void writeText(String text, String path){
+        File file = new File(path);
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            out.write(text);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeText(List<RelationInput> list, String path, Map<String, Integer> relationMap) {
         File relationDoc = new File(path);
         BufferedWriter outRelationDoc = null;
         try {
             outRelationDoc = new BufferedWriter(new FileWriter(relationDoc));
 
-            for (RelationInput relation : list){
-                outRelationDoc.write(relation.getHead().getId()+ "#" + relation.getTail().getId() + ": " + relationMap.get(relation.getRelation()) +"\n");
+            for (RelationInput relation : list) {
+                outRelationDoc.write(relation.getHead().getId() + "#" + relation.getTail().getId() + ": " + relationMap.get(relation.getRelation()) + "\n");
             }
 
             outRelationDoc.close();
@@ -134,7 +224,7 @@ public class UMLSService {
         }
     }
 
-    public void writeParamJson(String text, String path){
+    public void writeParamJson(String text, String path) {
         File relationDoc = new File(path);
         BufferedWriter outRelationDoc = null;
         try {
@@ -147,7 +237,7 @@ public class UMLSService {
         }
     }
 
-    public void writeJson(Object object, String path){
+    public void writeJson(Object object, String path) {
         File relationDoc = new File(path);
         BufferedWriter outRelationDoc = null;
         try {
@@ -162,24 +252,24 @@ public class UMLSService {
 
     }
 
-    public RelationInput getRelation(int id){
+    public RelationInput getRelation(int id) {
 
         RelationInput relationInput = new RelationInput();
         Predication predication = predicationMapper.selectByPrimaryKey(id);
 
-        if(predication != null){
+        if (predication != null) {
             int sentenceId = predication.getSentenceId();
             //        if (sentenceId > 7664820){
 //            return null;
 //        }
 
             PredicationAux predicationAux = getAux(predication.getPredicationId());
-            if (predicationAux == null){
+            if (predicationAux == null) {
                 return null;
             }
 
             Sentence sentence = getSentence(sentenceId);
-            if (sentence == null){
+            if (sentence == null) {
                 return null;
             }
 
@@ -187,10 +277,12 @@ public class UMLSService {
             headInput.setId(predication.getSubjectCui());
             headInput.setType(predication.getSubjectName());
             headInput.setWord(predicationAux.getSubjectText());
+            headInput.setSemType(predication.getSubjectSemtype());
             HeadInput tailInput = new HeadInput();
             tailInput.setId(predication.getObjectCui());
             tailInput.setType(predication.getObjectName());
             tailInput.setWord(predicationAux.getObjectText());
+            tailInput.setSemType(predication.getObjectSemtype());
             relationInput.setSentence(sentence.getSentence());
             relationInput.setHead(headInput);
             relationInput.setTail(tailInput);
@@ -202,11 +294,11 @@ public class UMLSService {
 
     }
 
-    public Sentence getSentence(int id){
+    public Sentence getSentence(int id) {
         return sentenceMapper.selectByPrimaryKey(id);
     }
 
-    public PredicationAux getAux(int id){
+    public PredicationAux getAux(int id) {
         return predicationAuxMapper.selectByPredicationId(id);
     }
 

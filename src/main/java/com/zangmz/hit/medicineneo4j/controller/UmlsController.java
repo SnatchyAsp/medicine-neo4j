@@ -16,17 +16,18 @@ public class UmlsController {
     UMLSService umlsService;
 
     @RequestMapping("getpredication")
-    public Predication getPredication(@RequestParam int id){
+    public Predication getPredication(@RequestParam int id) {
         return umlsService.getPredicationById(id);
 
     }
 
     @RequestMapping("getRelation")
-    public void getRelation(){
+    public void getRelation() {
         umlsService.getPredicationBatch(110254325, 110297325, 110297325, 110304325);
     }
 
-
-
-
+    @RequestMapping("getRelationByType")
+    public void getRelationByType(){
+        umlsService.getRelationByType("E:\\zangmz\\goldstandard\\adjudicated_rel.txt");
+    }
 }

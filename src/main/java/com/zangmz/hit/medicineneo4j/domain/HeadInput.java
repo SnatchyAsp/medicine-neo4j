@@ -13,6 +13,7 @@ public class HeadInput {
     String word;
     String type;
     String id;
+    String semType;
 
     @Override
     public String toString() {

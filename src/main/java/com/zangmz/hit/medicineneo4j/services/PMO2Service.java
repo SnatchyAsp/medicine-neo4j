@@ -1,10 +1,16 @@
 package com.zangmz.hit.medicineneo4j.services;
 
+import com.zangmz.hit.medicineneo4j.bo.res.BaseRes;
+import com.zangmz.hit.medicineneo4j.bo.res.RelationListRes;
 import com.zangmz.hit.medicineneo4j.domain.PrimaryClass;
 import com.zangmz.hit.medicineneo4j.pmo2domain.Instance;
 import com.zangmz.hit.medicineneo4j.pmo2domain.Klass;
+import com.zangmz.hit.medicineneo4j.pmo2domain.PMO2Relation;
+import com.zangmz.hit.medicineneo4j.pmo2domain.UmlsRel;
 import com.zangmz.hit.medicineneo4j.repositories.InstanceRep;
 import com.zangmz.hit.medicineneo4j.repositories.KlassRep;
+import com.zangmz.hit.medicineneo4j.repositories.UmlsRelMapper;
+import com.zangmz.hit.medicineneo4j.repositories.UmlsRelRep;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.*;
 import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PMO2Service {
@@ -25,6 +28,43 @@ public class PMO2Service {
 
     @Resource
     private InstanceRep instanceRep;
+
+    @Resource
+    private UmlsRelRep umlsRelRep;
+
+
+    private UmlsRelMapper umlsRelMapper = new UmlsRelMapper();
+
+    @Transactional(readOnly = true)
+    public BaseRes<PMO2Relation> getRelationBySubjectAndObject(String subject, String object, String relationType){
+        RelationListRes relationListRes = new RelationListRes();
+
+        BaseRes<PMO2Relation> result = null;
+        Long subjectId = findId(subject);
+        if (subjectId == null){
+            result = new BaseRes<>();
+            result.getFail("no subject", "1");
+            return result;
+        }
+        Long objectId = findId(object);
+        if (objectId == null){
+            result = new BaseRes<>();
+            result.getFail("no object", "2");
+            return result;
+        }
+        try {
+            result = umlsRelMapper.get_rel(subjectId, objectId, relationType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        List<UmlsRel> umlsRelList = umlsRelRep.getUmlsRel(subject, object);
+
+//        UmlsRel umlsRel= umlsRelRep.test();
+//        System.out.println(umlsRel);
+        return result;
+
+
+    }
 
 
     @Transactional(readOnly = true)
