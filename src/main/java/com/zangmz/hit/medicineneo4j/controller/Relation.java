@@ -3,6 +3,8 @@ package com.zangmz.hit.medicineneo4j.controller;
 import com.zangmz.hit.medicineneo4j.bo.res.BaseRes;
 import com.zangmz.hit.medicineneo4j.pmo2domain.PMO2Relation;
 import com.zangmz.hit.medicineneo4j.services.PMO2Service;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +16,17 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
+@Getter
+@Setter
 public class Relation {
 
     @Resource
     private PMO2Service pmo2Service;
 
     /*some classes*/
-    public class NewNode{
+    @Getter
+    @Setter
+    public static class NewNode{
         private String ID;
         private String name;
         private String subclass_of;
@@ -87,7 +92,9 @@ public class Relation {
             return ans;
         }
     }
-    public class arelation{
+    @Getter
+    @Setter
+    public static class arelation{
         private String pmid;
         private String sentence;
         private String rel_name;
@@ -548,47 +555,47 @@ public class Relation {
         return return_message;
     }
 
-    public String gethead_entity() {
+    /*public String getHead_entity() {
         return head_entity;
     }
-    public void sethead_entity(String head_entity) {
+    public void setHead_entity(String head_entity) {
         this.head_entity = head_entity;
     }
 
-    public String gettail_entity() {
+    public String getTail_entity() {
         return tail_entity;
     }
-    public void settail_entity(String tail_entity) {
+    public void setTail_entity(String tail_entity) {
         this.tail_entity = tail_entity;
     }
 
-    public String getumls_pcnn() {
+    public String getUmls_pcnn() {
         return umls_pcnn;
     }
-    public void setumls_pcnn(String umls_pcnn) {
+    public void setUmls_pcnn(String umls_pcnn) {
         this.umls_pcnn = umls_pcnn;
     }
 
-    public String getumls_rel() {
+    public String getUmls_rel() {
         return umls_rel;
     }
-    public void setumls_rel(String umls_rel) {
+    public void setUmls_rel(String umls_rel) {
         this.umls_rel = umls_rel;
     }
 
-    public String getpmoz_rel() {
+    public String getPmoz_rel() {
         return pmoz_rel;
     }
-    public void setpmoz_rel(String pmoz_rel) {
+    public void setPmoz_rel(String pmoz_rel) {
         this.pmoz_rel = pmoz_rel;
     }
 
-    public String getsubclass_of() {
+    public String getSubclass_of() {
         return subclass_of;
     }
-    public void setsubclass_of(String subclass_of) {
+    public void setSubclass_of(String subclass_of) {
         this.subclass_of = subclass_of;
-    }
+    }*/
 
     public String getRelation()
     {

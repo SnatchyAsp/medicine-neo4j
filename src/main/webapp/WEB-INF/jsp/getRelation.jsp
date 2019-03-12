@@ -10,6 +10,7 @@
 <%@ page import="com.zangmz.hit.medicineneo4j.controller.Relation " %>
 <%@ page import="javax.annotation.Resource " %>
 <%@ page import="org.json.JSONObject" %>
+<%@ page import="com.alibaba.fastjson.JSON" %>
 
 <head>
     <title>Test</title>
@@ -34,47 +35,48 @@
 <c:set value="${umls_rel}" var="umls_rel" />
 <c:set value="${pmoz_rel}" var="pmoz_rel" />
 <c:set value="${subclass_of}" var="subclass_of" />
+<c:set value="${rel}" var="rel" />
 
 
 <%
 
-    Relation testrel = new Relation();
-    System.out.println("111111111111111111111111111111111111111");
-
-
+    /*Relation testrel = new Relation();
     testrel.sethead_entity((String)pageContext.findAttribute("head_entity"));
     testrel.settail_entity((String)pageContext.findAttribute("tail_entity"));
     testrel.setpmoz_rel((String)pageContext.findAttribute("pmoz_rel"));
     testrel.setsubclass_of((String)pageContext.findAttribute("subclass_of"));
     testrel.setumls_pcnn((String)pageContext.findAttribute("umls_pcnn"));
-    testrel.setumls_rel((String)pageContext.findAttribute("umls_rel"));
-    System.out.println(testrel.getumls_pcnn());
-    System.out.println(testrel.getumls_rel());
-    if(testrel.getsubclass_of()!=null){%>
+    testrel.setumls_rel((String)pageContext.findAttribute("umls_rel"));*/
+    String testd = (String)pageContext.findAttribute("rel");
+    Relation testrel = JSON.parseObject(testd,Relation.class);
+
+    System.out.println(testd);
+
+    /*if(testrel.getSubclass_of()!=null){%>
 <c:set value="${subclass_of_data}" var="subclass_of_data" scope="session"/>
     <%
             JSONObject data_info = new JSONObject((String)pageContext.findAttribute("subclass_of_data"));
             testrel.setinfo(data_info, "subclass_of");
     }
 
-    if(testrel.getpmoz_rel()!=null){%>
+    if(testrel.getPmoz_rel()!=null){%>
 <c:set value="${pmoz_rel_data}" var="pmoz_rel_data" scope="session"/>
 <%
         JSONObject data_info = new JSONObject((String)pageContext.findAttribute("pmoz_rel_data"));
         testrel.setinfo(data_info, "pmoz_rel");
     }
-    if(testrel.getumls_pcnn()!=null){%>
+    if(testrel.getUmls_pcnn()!=null){%>
 <c:set value="${umls_pcnn_data}" var="umls_pcnn_data" scope="session"/>
 <%
         JSONObject data_info = new JSONObject((String)pageContext.findAttribute("umls_pcnn_data"));
         testrel.setinfo(data_info, "umls_pcnn");
     }
-    if(testrel.getumls_rel()!=null){%>
+    if(testrel.getUmls_rel()!=null){%>
 <c:set value="${umls_rel_data}" var="umls_rel_data" scope="session"/>
 <%
         JSONObject data_info = new JSONObject((String)pageContext.findAttribute("umls_rel_data"));
         testrel.setinfo(data_info, "umls_rel");
-    }
+    }*/
     //testrel.InitInfo();
 
 %>
@@ -95,13 +97,13 @@
                 <div class="form-group">
                     <label for="head_entity" class="col-sm-2 control-label">Subject</label>
                     <div class="col-sm-10">
-                        <input type="text" name="head_entity" class="form-control" id="head_entity" placeholder="<%=testrel.gethead_entity()%>">
+                        <input type="text" name="head_entity" class="form-control" id="head_entity" placeholder="<%=testrel.getHead_entity()%>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tail_entity" class="col-sm-2 control-label">Object</label>
                     <div class="col-sm-10">
-                        <input type="text" name="tail_entity" class="form-control" id="tail_entity" placeholder="<%=testrel.gettail_entity()%>">
+                        <input type="text" name="tail_entity" class="form-control" id="tail_entity" placeholder="<%=testrel.getTail_entity()%>">
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">

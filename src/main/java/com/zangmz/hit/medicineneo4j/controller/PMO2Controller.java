@@ -7,6 +7,7 @@ import com.zangmz.hit.medicineneo4j.pmo2domain.Instance;
 import com.zangmz.hit.medicineneo4j.pmo2domain.Klass;
 import com.zangmz.hit.medicineneo4j.pmo2domain.PMO2Relation;
 import com.zangmz.hit.medicineneo4j.services.PMO2Service;
+import jdk.internal.org.objectweb.asm.TypeReference;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.json.JSONObject;
 import org.springframework.ui.ModelMap;
@@ -54,48 +55,54 @@ public class PMO2Controller {
 //
 //        return result;
 //    }
+
     @RequestMapping(value = "getRelation", method = RequestMethod.POST)
     public ModelAndView getRelation(@ModelAttribute("SpringWeb")Relation rel, ModelMap model){
         RelationListRes relationListRes = null;
 
-        if(rel.getumls_pcnn()!= null){
+        if(rel.getUmls_pcnn()!= null){
 
-            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.gethead_entity(), rel.gettail_entity(), rel.getumls_pcnn());
+            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_pcnn());
             JSONObject test = new JSONObject(result);
             String data = test.toString();
             //JSONObject test = new JSONObject(result);
-            //rel.setinfo(test, "umls_pcnn");
+            rel.setinfo(test, "umls_pcnn");
             model.addAttribute("umls_pcnn_data",data);
         }
-        if(rel.getumls_rel()!=null){
-            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.gethead_entity(), rel.gettail_entity(), rel.getumls_rel());
+        if(rel.getUmls_rel()!=null){
+            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_rel());
             JSONObject test = new JSONObject(result);
             String data = test.toString();
             //JSONObject test = new JSONObject(result);
-            //rel.setinfo(test, "umls_rel");
+            rel.setinfo(test, "umls_rel");
             model.addAttribute("umls_rel_data",data);
         }
-        if(rel.getpmoz_rel()!=null){
-            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.gethead_entity(), rel.gettail_entity(), rel.getpmoz_rel());
+        if(rel.getPmoz_rel()!=null){
+            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getPmoz_rel());
             JSONObject test = new JSONObject(result);
             String data = test.toString();
             //JSONObject test = new JSONObject(result);
-            //rel.setinfo(test, "pmoz_rel");
+            rel.setinfo(test, "pmoz_rel");
             model.addAttribute("pmoz_rel_data",data);
         }
-        if(rel.getsubclass_of()!=null){
-            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.gethead_entity(), rel.gettail_entity(), rel.getsubclass_of());
+        if(rel.getSubclass_of()!=null){
+            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getSubclass_of());
             JSONObject test = new JSONObject(result);
             String data = test.toString();
-            //rel.setinfo(test, "subclass_of");
+            rel.setinfo(test, "subclass_of");
             model.addAttribute("subclass_of_data",data);
         }
-        model.addAttribute("head_entity", rel.gethead_entity());
-        model.addAttribute("tail_entity", rel.gettail_entity());
-        model.addAttribute("umls_pcnn", rel.getumls_pcnn());
-        model.addAttribute("umls_rel", rel.getumls_rel());
-        model.addAttribute("pmoz_rel", rel.getpmoz_rel());
-        model.addAttribute("subclass_of", rel.getsubclass_of());
+        //JSONObject test = new JSONObject(rel);
+        String test = com.alibaba.fastjson.JSON.toJSONString(rel);
+        Relation newrel = com.alibaba.fastjson.JSON.parseObject(test, Relation.class);
+        model.addAttribute("rel",test);
+        model.addAttribute("head_entity", rel.getHead_entity());
+        model.addAttribute("tail_entity", rel.getTail_entity());
+        model.addAttribute("umls_pcnn", rel.getUmls_pcnn());
+        model.addAttribute("umls_rel", rel.getUmls_rel());
+        model.addAttribute("pmoz_rel", rel.getPmoz_rel());
+        model.addAttribute("subclass_of", rel.getSubclass_of());
+
         return new ModelAndView("getRelation", "command", new Relation());
     }
 

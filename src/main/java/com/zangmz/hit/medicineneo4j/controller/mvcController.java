@@ -36,12 +36,12 @@ public class mvcController {
     }*/
     public ModelAndView addUser(@ModelAttribute("SpringWeb")Relation rel,
                                 ModelMap model) {
-        model.addAttribute("head_entity", rel.gethead_entity());
-        model.addAttribute("tail_entity", rel.gettail_entity());
-        model.addAttribute("umls_pcnn", rel.getumls_pcnn());
-        model.addAttribute("umls_rel", rel.getumls_rel());
-        model.addAttribute("pmoz_rel", rel.getpmoz_rel());
-        model.addAttribute("subclass_of", rel.getsubclass_of());
+        model.addAttribute("head_entity", rel.getHead_entity());
+        model.addAttribute("tail_entity", rel.getTail_entity());
+        model.addAttribute("umls_pcnn", rel.getUmls_pcnn());
+        model.addAttribute("umls_rel", rel.getUmls_rel());
+        model.addAttribute("pmoz_rel", rel.getPmoz_rel());
+        model.addAttribute("subclass_of", rel.getSubclass_of());
         return new ModelAndView("getRelation", "command", new Relation());
     }
 
