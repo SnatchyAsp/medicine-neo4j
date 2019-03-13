@@ -6,11 +6,10 @@
   Time: 10:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="java.util.List" %>
 <%@ page import="com.zangmz.hit.medicineneo4j.controller.Relation " %>
 <%@ page import="javax.annotation.Resource " %>
-<%@ page import="org.json.JSONObject" %>
 <%@ page import="com.alibaba.fastjson.JSON" %>
+<%@ page import="java.util.ArrayList" %>
 
 <head>
     <title>Test</title>
@@ -28,57 +27,14 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<c:set value="${pageContext.request.contextPath}" var="path" scope="page"/>
-<c:set value="${head_entity}" var="head_entity" />
-<c:set value="${tail_entity}" var="tail_entity" />
-<c:set value="${umls_pcnn}" var="umls_pcnn" />
-<c:set value="${umls_rel}" var="umls_rel" />
-<c:set value="${pmoz_rel}" var="pmoz_rel" />
-<c:set value="${subclass_of}" var="subclass_of" />
-<c:set value="${rel}" var="rel" />
-
 
 <%
-
-    /*Relation testrel = new Relation();
-    testrel.sethead_entity((String)pageContext.findAttribute("head_entity"));
-    testrel.settail_entity((String)pageContext.findAttribute("tail_entity"));
-    testrel.setpmoz_rel((String)pageContext.findAttribute("pmoz_rel"));
-    testrel.setsubclass_of((String)pageContext.findAttribute("subclass_of"));
-    testrel.setumls_pcnn((String)pageContext.findAttribute("umls_pcnn"));
-    testrel.setumls_rel((String)pageContext.findAttribute("umls_rel"));*/
     String testd = (String)pageContext.findAttribute("rel");
-    Relation testrel = JSON.parseObject(testd,Relation.class);
-
-    System.out.println(testd);
-
-    /*if(testrel.getSubclass_of()!=null){%>
-<c:set value="${subclass_of_data}" var="subclass_of_data" scope="session"/>
-    <%
-            JSONObject data_info = new JSONObject((String)pageContext.findAttribute("subclass_of_data"));
-            testrel.setinfo(data_info, "subclass_of");
-    }
-
-    if(testrel.getPmoz_rel()!=null){%>
-<c:set value="${pmoz_rel_data}" var="pmoz_rel_data" scope="session"/>
-<%
-        JSONObject data_info = new JSONObject((String)pageContext.findAttribute("pmoz_rel_data"));
-        testrel.setinfo(data_info, "pmoz_rel");
-    }
-    if(testrel.getUmls_pcnn()!=null){%>
-<c:set value="${umls_pcnn_data}" var="umls_pcnn_data" scope="session"/>
-<%
-        JSONObject data_info = new JSONObject((String)pageContext.findAttribute("umls_pcnn_data"));
-        testrel.setinfo(data_info, "umls_pcnn");
-    }
-    if(testrel.getUmls_rel()!=null){%>
-<c:set value="${umls_rel_data}" var="umls_rel_data" scope="session"/>
-<%
-        JSONObject data_info = new JSONObject((String)pageContext.findAttribute("umls_rel_data"));
-        testrel.setinfo(data_info, "umls_rel");
-    }*/
-    //testrel.InitInfo();
-
+    Relation atestrel = JSON.parseObject(testd,Relation.class);
+    String test1 = (String)pageContext.findAttribute("test11");
+    ArrayList<Relation> aa = (ArrayList<Relation>) com.alibaba.fastjson.JSON.parseArray(test1, Relation.class);
+    Integer all_returncode = (Integer) pageContext.findAttribute("all_returncode");
+    String all_returnmessage = (String)pageContext.findAttribute("all_returnmessage");
 %>
 <body>
 <div>
@@ -97,13 +53,13 @@
                 <div class="form-group">
                     <label for="head_entity" class="col-sm-2 control-label">Subject</label>
                     <div class="col-sm-10">
-                        <input type="text" name="head_entity" class="form-control" id="head_entity" placeholder="<%=testrel.getHead_entity()%>">
+                        <input type="text" name="head_entity" class="form-control" id="head_entity" placeholder="<%=atestrel.getHead_entity()%>" value="<%=atestrel.getHead_entity()%>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tail_entity" class="col-sm-2 control-label">Object</label>
                     <div class="col-sm-10">
-                        <input type="text" name="tail_entity" class="form-control" id="tail_entity" placeholder="<%=testrel.getTail_entity()%>">
+                        <input type="text" name="tail_entity" class="form-control" id="tail_entity" placeholder="<%=atestrel.getTail_entity()%>" value="<%=atestrel.getTail_entity()%>">
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
@@ -115,6 +71,14 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-default">query</button>
+                    </div>
+                </div>
+
+            </form>
+            <form class="form-horizontal" action="input" method="post">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">clear</button>
                     </div>
                 </div>
             </form>
@@ -141,29 +105,146 @@
 
 </div>
 
-<%if(testrel.getReturn_code()==0){%>
+<%if(all_returncode==0){
+    if(atestrel.getReturn_code()!=0){%>
+<div class="col-sm-offset-2 col-sm-10" >
+    <h1><%=atestrel.getReturn_message()%></h1>
+</div>
+    <%}%>
+
 <div class="col-sm-offset-2 col-sm-10" id="cy" style="width: 1500px;height:1000px;">
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
+            var demoEdges = [];
+            var demoNodes=[];
+            <%
+            for(int m=0;m<aa.size();m++){
+                Relation testrel = aa.get(m);
+                if(testrel.getReturn_code()!=0) continue;
+            if(testrel.pmoz_rel__relations!=null){
+                for(int i=0;i<testrel.pmoz_rel__relations.length;i++){
+                    String temprel;
+                    if(testrel.pmoz_rel__relations[i].getRel_name()==null){
+                        temprel="";
+                    }
+                    else temprel=testrel.pmoz_rel__relations[i].getRel_name();
+            %>
+            demoEdges.push({
+                data:{
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getPmoz_rel()+i%>",
+                    rel:"<%=temprel%>",
+                    sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
+                    pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
+                    type:"pmoz_rel",
+                    source:'<%=testrel.object.getName()%>',
+                    target:'<%=testrel.subject.getName()%>',
+                    ntype:'edge',
+                    detail:'<%=testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>'
+                }
+            });
+            <%}
+            }%>
+
+            <%
+            if(testrel.subclass_of__relations!=null){
+                for(int i=0;i<testrel.subclass_of__relations.length;i++){
+                    String temprel;
+                    if(testrel.subclass_of__relations[i].getRel_name()==null){
+                        temprel="";
+                    }
+                    else temprel=testrel.subclass_of__relations[i].getRel_name();
+            %>
+            demoEdges.push({
+                data:{
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getSubclass_of()+i%>",
+                    rel:"<%=temprel%>",
+                    sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
+                    pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
+                    type:"subclass_of",
+                    source:'<%=testrel.object.getName()%>',
+                    target:'<%=testrel.subject.getName()%>',
+                    ntype:'edge',
+                    detail:'<%=testrel.subclass_of__relations[i].getinfo("subclass_of")%>'
+
+                }
+            });
+            <%}
+            }%>
+
+            <%
+            if(testrel.umls_pcnn_relations!=null){
+                for(int i=0;i<testrel.umls_pcnn_relations.length;i++){
+                    String temprel;
+                    if(testrel.umls_pcnn_relations[i].getRel_name()==null){
+                        temprel="";
+                    }
+                    else temprel=testrel.umls_pcnn_relations[i].getRel_name();
+            %>
+            demoEdges.push({
+                data:{
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_pcnn()+i%>",
+                    rel:"<%=temprel%>",
+                    sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
+                    pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
+                    type:"umls_pcnn",
+                    source:'<%=testrel.object.getName()%>',
+                    target:'<%=testrel.subject.getName()%>',
+                    ntype:'edge',
+                    detail:'<%=testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>'
+
+                }
+            });
+            <%}
+            }%>
+
+            <%
+            if(testrel.umls_rel_relations!=null){
+                for(int i=0;i<testrel.umls_rel_relations.length;i++){
+                    String temprel;
+                    if(testrel.umls_rel_relations[i].getRel_name()==null){
+                        temprel="";
+                    }
+                    else temprel=testrel.umls_rel_relations[i].getRel_name();
+            %>
+            demoEdges.push({
+                data:{
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_rel()+i%>",
+                    rel:"<%=temprel%>",
+                    sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
+                    pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
+                    type:"umls_rel",
+                    source:'<%=testrel.object.getName()%>',
+                    target:'<%=testrel.subject.getName()%>',
+                    ntype:'edge',
+                    detail:'<%=testrel.umls_rel_relations[i].getinfo("umls_rel")%>'
+
+                }
+            });
+            <%}
+            }%>
+
+            demoNodes.push({
+                data: { id: '<%=testrel.object.getName()%>',
+                    info: '<%=testrel.object.getinfo()%>',
+                    ntype:'real'
+                }
+            })
+            demoNodes.push({
+                data: { id: '<%=testrel.subject.getName()%>',
+                    info:'<%=testrel.subject.getinfo()%>'},
+                ntype:'real'
+            })
+            <%}%>
             var cy = window.cy =cytoscape({
 
                 container: document.getElementById('cy'),
                 zoomingEnabled: false,
                 //panningEnabled: false,
-                elements: [
-                    {
-                        data: { id: '<%=testrel.object.getName()%>',
-                            info: '<%=testrel.object.getinfo()%>',
-                            ntype:'real'
-                        }
-                    },
-                    {
-                        data: { id: '<%=testrel.subject.getName()%>',
-                        info:'<%=testrel.subject.getinfo()%>'},
-                        ntype:'real'
-                    }
 
-                ],
+                elements: {
+                    nodes: demoNodes,
+                    edges: demoEdges
+                },
 
                 style: [
                     {
@@ -233,87 +314,10 @@
                 }
 
             });
-            <%
-            if(testrel.pmoz_rel__relations!=null){
-                for(int i=0;i<testrel.pmoz_rel__relations.length;i++){
-            %>
-            cy.add({
-                data:{
-                    rel:"<%=testrel.pmoz_rel__relations[i].getRel_name()%>",
-                    sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
-                    pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
-                    type:"pmoz_rel",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
-                    ntype:'edge',
-                    detail:'<%=testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>'
 
-                }
-            });
-            <%}
-            }%>
-
-            <%
-            if(testrel.subclass_of__relations!=null){
-                for(int i=0;i<testrel.subclass_of__relations.length;i++){
-            %>
-            cy.add({
-                data:{
-                    rel:"<%=testrel.subclass_of__relations[i].getRel_name()%>",
-                    sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
-                    pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
-                    type:"subclass_of",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
-                    ntype:'edge',
-                    detail:'<%=testrel.subclass_of__relations[i].getinfo("subclass_of")%>'
-
-                }
-            });
-            <%}
-            }%>
-
-            <%
-            if(testrel.umls_pcnn_relations!=null){
-                for(int i=0;i<testrel.umls_pcnn_relations.length;i++){
-            %>
-            cy.add({
-                data:{
-                    rel:"<%=testrel.umls_pcnn_relations[i].getRel_name()%>",
-                    sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
-                    pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
-                    type:"umls_pcnn",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
-                    ntype:'edge',
-                    detail:'<%=testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>'
-
-                }
-            });
-            <%}
-            }%>
-
-            <%
-            if(testrel.umls_rel_relations!=null){
-                for(int i=0;i<testrel.umls_rel_relations.length;i++){
-            %>
-            cy.add({
-                data:{
-                    rel:"<%=testrel.umls_rel_relations[i].getRel_name()%>",
-                    sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
-                    pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
-                    type:"umls_rel",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
-                    ntype:'edge',
-                    detail:'<%=testrel.umls_rel_relations[i].getinfo("umls_rel")%>'
-
-                }
-            });
-            <%}
-            }%>
             cy.layout({
-                name: 'random'
+                //name: 'random'
+                name: 'grid'
             }).run();
             var showinfo_node = function(n){
                 cy.remove(cy.getElementById('info'));
@@ -355,7 +359,7 @@
                 var temppnode = cy.getElementById(this.id());
                 showinfo_node(temppnode);
             })
-            cy.on('click','edge',function(evt){
+            cy.on('click','edge[ntype="edge"]',function(evt){
                 var temppedge = cy.getElementById(this.id());
                 showinfo_edge(temppedge);
             })
@@ -368,13 +372,10 @@
 </div>
 
 <%}
-
-
-
 else{
 %>
 <div class="col-sm-offset-2 col-sm-10" >
-    <h1><%=testrel.getReturn_message()%></h1>
+    <h1><%=all_returnmessage%></h1>
 </div>
 <%}%>
 </body>

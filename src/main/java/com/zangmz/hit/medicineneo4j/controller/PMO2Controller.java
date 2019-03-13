@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/pmo2/")
@@ -23,6 +24,9 @@ public class PMO2Controller {
 
     @Resource
     private PMO2Service pmo2Service;
+    private ArrayList<Relation> test11=new ArrayList<>();
+    private int all_returncode=-1;
+    private String all_returnmessage;
 
 
 
@@ -48,67 +52,60 @@ public class PMO2Controller {
     }
 
 
-//    @RequestMapping("getRelation")
-//    public BaseRes<PMO2Relation> getRelation(@RequestParam String subject, @RequestParam String object, @RequestParam String relationType){
-//        RelationListRes relationListRes = null;
-//        BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(subject, object, relationType);
-//
-//        return result;
-//    }
+
 
     @RequestMapping(value = "getRelation", method = RequestMethod.POST)
     public ModelAndView getRelation(@ModelAttribute("SpringWeb")Relation rel, ModelMap model){
         RelationListRes relationListRes = null;
-
+        if(rel.getHead_entity()=="") rel.setHead_entity("###");
+        if(rel.getTail_entity()=="") rel.setTail_entity("###");
         if(rel.getUmls_pcnn()!= null){
-
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_pcnn());
             JSONObject test = new JSONObject(result);
-            String data = test.toString();
-            //JSONObject test = new JSONObject(result);
             rel.setinfo(test, "umls_pcnn");
-            model.addAttribute("umls_pcnn_data",data);
         }
         if(rel.getUmls_rel()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_rel());
             JSONObject test = new JSONObject(result);
-            String data = test.toString();
-            //JSONObject test = new JSONObject(result);
             rel.setinfo(test, "umls_rel");
-            model.addAttribute("umls_rel_data",data);
         }
         if(rel.getPmoz_rel()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getPmoz_rel());
             JSONObject test = new JSONObject(result);
-            String data = test.toString();
-            //JSONObject test = new JSONObject(result);
             rel.setinfo(test, "pmoz_rel");
-            model.addAttribute("pmoz_rel_data",data);
+
         }
         if(rel.getSubclass_of()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getSubclass_of());
             JSONObject test = new JSONObject(result);
-            String data = test.toString();
             rel.setinfo(test, "subclass_of");
-            model.addAttribute("subclass_of_data",data);
         }
-        //JSONObject test = new JSONObject(rel);
+        if(rel.getReturn_code()==-1) rel.setReturn_message("Please select a type of relation");
+        if(rel.getReturn_code()==0){
+            test11.add(rel);
+        }
+        if(all_returncode!=0){
+            all_returncode=rel.getReturn_code();
+            all_returnmessage=rel.getReturn_message();
+            }
+
         String test = com.alibaba.fastjson.JSON.toJSONString(rel);
-        Relation newrel = com.alibaba.fastjson.JSON.parseObject(test, Relation.class);
         model.addAttribute("rel",test);
-        model.addAttribute("head_entity", rel.getHead_entity());
-        model.addAttribute("tail_entity", rel.getTail_entity());
-        model.addAttribute("umls_pcnn", rel.getUmls_pcnn());
-        model.addAttribute("umls_rel", rel.getUmls_rel());
-        model.addAttribute("pmoz_rel", rel.getPmoz_rel());
-        model.addAttribute("subclass_of", rel.getSubclass_of());
+        String testlist = com.alibaba.fastjson.JSON.toJSONString(test11);
+        model.addAttribute("test11",testlist);
+        model.addAttribute("all_returncode",all_returncode);
+        model.addAttribute("all_returnmessage",all_returnmessage);
+
 
         return new ModelAndView("getRelation", "command", new Relation());
     }
 
 
-    @RequestMapping(value = "/input", method = RequestMethod.GET)
+    @RequestMapping(value = "/input")
     public ModelAndView user() {
+        test11=new ArrayList<>();
+        all_returncode=-1;
+        all_returnmessage="";
         return new ModelAndView("input", "command", new Relation());
     }
 
