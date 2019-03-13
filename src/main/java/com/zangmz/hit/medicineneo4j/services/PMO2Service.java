@@ -36,9 +36,7 @@ public class PMO2Service {
     private UmlsRelMapper umlsRelMapper = new UmlsRelMapper();
 
     @Transactional(readOnly = true)
-    public BaseRes<PMO2Relation> getRelationBySubjectAndObject(String subject, String object, String relationType){
-        RelationListRes relationListRes = new RelationListRes();
-
+    public BaseRes<PMO2Relation> getRelationBySubject(String subject, String relationType){
         BaseRes<PMO2Relation> result = null;
         Long subjectId = findId(subject);
         if (subjectId == null){
@@ -46,17 +44,64 @@ public class PMO2Service {
             result.getFail("no subject", "1");
             return result;
         }
-        Long objectId = findId(object);
-        if (objectId == null){
-            result = new BaseRes<>();
-            result.getFail("no object", "2");
-            return result;
-        }
         try {
-            result = umlsRelMapper.get_rel(subjectId, objectId, relationType);
+            result = umlsRelMapper.get_rel(subjectId, relationType);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes<PMO2Relation> getRelationBySubjectAndObject(String subject, String object, String relationType){
+
+        BaseRes<PMO2Relation> result = null;
+        if ("###".equals(object)){
+            Long subjectId = findId(subject);
+            if (subjectId == null){
+                result = new BaseRes<>();
+                result.getFail("no subject", "1");
+                return result;
+            }
+            try {
+                result = umlsRelMapper.get_rel(subjectId, relationType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if ("###".equals(subject)){
+            Long objectId = findId(object);
+            if (objectId == null){
+                result = new BaseRes<>();
+                result.getFail("no object", "2");
+                return result;
+            }
+            try {
+                result = umlsRelMapper.get_rel(relationType, objectId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            Long subjectId = findId(subject);
+            if (subjectId == null){
+                result = new BaseRes<>();
+                result.getFail("no subject", "1");
+                return result;
+            }
+            Long objectId = findId(object);
+            if (objectId == null){
+                result = new BaseRes<>();
+                result.getFail("no object", "2");
+                return result;
+            }
+            try {
+                result = umlsRelMapper.get_rel(subjectId, objectId, relationType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 //        List<UmlsRel> umlsRelList = umlsRelRep.getUmlsRel(subject, object);
 
 //        UmlsRel umlsRel= umlsRelRep.test();
