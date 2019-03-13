@@ -39,58 +39,58 @@ public class UmlsRelMapper {
             Klass subject = new Klass();
 
             PMO2Relation pmo2Relation = new PMO2Relation();
-            if (!StringUtils.isEmpty(record.get("ID(s)").toString())){
+            if (record.get("ID(s)").toString()!=null){
                 subject.setId(new Long(record.get("ID(s)").toString()));
             }
-            if (!StringUtils.isEmpty(record.get("s").get("MCID").asString())){
+            if (record.get("s").get("MCID").asString()!=null){
                 subject.setMCID(record.get("s").get("MCID").asString());
             }
-            if (!StringUtils.isEmpty(record.get("s").get("MTID").asString())){
+            if (record.get("s").get("MTID").asString()!=null){
                 subject.setMTID(record.get("s").get("MTID").asString());
             }
-            if (!StringUtils.isEmpty(record.get("s").get("name").asString())){
+            if (record.get("s").get("name").asString()!=null){
                 subject.setName(record.get("s").get("name").asString());
             }
-            if (!StringUtils.isEmpty(record.get("s").get("subclass_of").asString())){
+            if (record.get("s").get("subclass_of").asString()!=null){
                 subject.setSubclass_of(record.get("s").get("subclass_of").asString());
             }
-            if (!StringUtils.isEmpty(record.get("s").get("tree_number").asString())){
+            if (record.get("s").get("tree_number").asString()!=null){
                 subject.setTree_number(record.get("s").get("tree_number").asString());
             }
             pmo2Relation.setSubject(subject);
 
             Klass object = new Klass();
-            if (!StringUtils.isEmpty(record.get("ID(o)").toString())){
+            if (record.get("ID(o)").toString()!=null){
                 object.setId(new Long(record.get("ID(o)").toString()));
             }
-            if (!StringUtils.isEmpty(record.get("o").get("MCID").asString())){
+            if (record.get("o").get("MCID").asString()!=null){
                 object.setMCID(record.get("o").get("MCID").asString());
             }
-            if (!StringUtils.isEmpty(record.get("o").get("MTID").asString())){
+            if (record.get("o").get("MTID").asString()!=null){
                 object.setMTID(record.get("o").get("MTID").asString());
             }
-            if (!StringUtils.isEmpty(record.get("o").get("name").asString())){
+            if (record.get("o").get("name").asString()!=null){
                 object.setName(record.get("o").get("name").asString());
             }
-            if (!StringUtils.isEmpty(record.get("o").get("subclass_of").asString())){
+            if (record.get("o").get("subclass_of").asString()!=null){
                 object.setSubclass_of(record.get("o").get("subclass_of").asString());
             }
-            if (!StringUtils.isEmpty(record.get("o").get("tree_number").asString())){
+            if (record.get("o").get("tree_number").asString()!=null){
                 object.setTree_number(record.get("o").get("tree_number").asString());
             }
             pmo2Relation.setObject(object);
 
             UmlsRel umlsRelation = new UmlsRel();
-            if (!StringUtils.isEmpty(record.get("rel").get("ID").asString())){
+            if (record.get("rel").get("ID").asString()!=null){
                 umlsRelation.setId(record.get("rel").get("ID").asString());
             }
-            if(!StringUtils.isEmpty(record.get("rel").get("sentence").asString())){
+            if(record.get("rel").get("sentence").asString()!=null){
                 umlsRelation.setSentence(record.get("rel").get("sentence").asString());
             }
-            if (!StringUtils.isEmpty(record.get("rel").get("relation").asString())){
+            if (record.get("rel").get("relation").asString()!=null){
                 umlsRelation.setRelation(record.get("rel").get("relation").asString());
             }
-            if (!StringUtils.isEmpty(record.get("rel").get("pmid").asString())){
+            if (record.get("rel").get("pmid").asString()!=null){
                 umlsRelation.setPmid(record.get("rel").get("pmid").asString());
             }
             pmo2Relation.setRelation(umlsRelation);

@@ -136,10 +136,10 @@
                     sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
                     pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
                     type:"pmoz_rel",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
+                    source:'<%=testrel.object.getinfo()%>',
+                    target:'<%=testrel.subject.getinfo()%>',
                     ntype:'edge',
-                    detail:'<%=testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>'
+                    detail:"<%=testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>"
                 }
             });
             <%}
@@ -161,10 +161,10 @@
                     sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
                     pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
                     type:"subclass_of",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
+                    source:'<%=testrel.object.getinfo()%>',
+                    target:'<%=testrel.subject.getinfo()%>',
                     ntype:'edge',
-                    detail:'<%=testrel.subclass_of__relations[i].getinfo("subclass_of")%>'
+                    detail:"<%=testrel.subclass_of__relations[i].getinfo("subclass_of")%>"
 
                 }
             });
@@ -187,10 +187,10 @@
                     sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
                     type:"umls_pcnn",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
+                    source:'<%=testrel.object.getinfo()%>',
+                    target:'<%=testrel.subject.getinfo()%>',
                     ntype:'edge',
-                    detail:'<%=testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>'
+                    detail:"<%=testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>"
 
                 }
             });
@@ -213,10 +213,10 @@
                     sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
                     type:"umls_rel",
-                    source:'<%=testrel.object.getName()%>',
-                    target:'<%=testrel.subject.getName()%>',
+                    source:'<%=testrel.object.getinfo()%>',
+                    target:'<%=testrel.subject.getinfo()%>',
                     ntype:'edge',
-                    detail:'<%=testrel.umls_rel_relations[i].getinfo("umls_rel")%>'
+                    detail:"<%=testrel.umls_rel_relations[i].getinfo("umls_rel")%>"
 
                 }
             });
@@ -224,13 +224,15 @@
             }%>
 
             demoNodes.push({
-                data: { id: '<%=testrel.object.getName()%>',
+                data: { name: '<%=testrel.object.getName()%>',
+                    id:'<%=testrel.object.getinfo()%>',
                     info: '<%=testrel.object.getinfo()%>',
                     ntype:'real'
                 }
             })
             demoNodes.push({
-                data: { id: '<%=testrel.subject.getName()%>',
+                data: { id: '<%=testrel.subject.getinfo()%>',
+                    name: '<%=testrel.subject.getName()%>',
                     info:'<%=testrel.subject.getinfo()%>'},
                 ntype:'real'
             })
@@ -251,7 +253,7 @@
                         selector: 'node',
                         style: {
                             'background-color': '#666',
-                            'label': 'data(id)'
+                            'label': 'data(name)'
                         }
                     },
                     {
@@ -316,8 +318,8 @@
             });
 
             cy.layout({
-                //name: 'random'
-                name: 'grid'
+                name: 'random'
+                //name: 'grid'
             }).run();
             var showinfo_node = function(n){
                 cy.remove(cy.getElementById('info'));
