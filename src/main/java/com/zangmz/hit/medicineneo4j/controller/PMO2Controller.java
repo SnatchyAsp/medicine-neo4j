@@ -9,6 +9,7 @@ import com.zangmz.hit.medicineneo4j.pmo2domain.PMO2Relation;
 import com.zangmz.hit.medicineneo4j.services.PMO2Service;
 import jdk.internal.org.objectweb.asm.TypeReference;
 import org.hibernate.validator.constraints.pl.REGON;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -62,28 +63,84 @@ public class PMO2Controller {
         if(rel.getUmls_pcnn()!= null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_pcnn());
             JSONObject test = new JSONObject(result);
-            rel.setinfo(test, "umls_pcnn");
+            Integer temp_return_code=test.getInt("returnCode");
+            String temp_return_message=test.getString("returnMessage");
+            if(temp_return_code==0){
+                JSONArray rels = test.getJSONArray("data");
+                for(int i=0;i<rels.length();i++)
+                {
+                    Relation newrel = new Relation();
+                    newrel.setReturn_code(temp_return_code);
+                    newrel.setReturn_message(temp_return_message);
+                    newrel.setinfo(rels.getJSONObject(i),"umls_pcnn");
+                    test11.add(newrel);
+                }
+            }
+            rel.setrelreturn(temp_return_message, temp_return_code);
+            //rel.setinfo(test, "umls_pcnn");
         }
         if(rel.getUmls_rel()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_rel());
             JSONObject test = new JSONObject(result);
-            rel.setinfo(test, "umls_rel");
+            Integer temp_return_code=test.getInt("returnCode");
+            String temp_return_message=test.getString("returnMessage");
+            if(temp_return_code==0){
+                JSONArray rels = test.getJSONArray("data");
+                for(int i=0;i<rels.length();i++)
+                {
+                    Relation newrel = new Relation();
+                    newrel.setReturn_code(temp_return_code);
+                    newrel.setReturn_message(temp_return_message);
+                    newrel.setinfo(rels.getJSONObject(i),"umls_rel");
+                    test11.add(newrel);
+                }
+            }
+            rel.setrelreturn(temp_return_message, temp_return_code);
+            //rel.setinfo(test, "umls_rel");
         }
         if(rel.getPmoz_rel()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getPmoz_rel());
             JSONObject test = new JSONObject(result);
-            rel.setinfo(test, "pmoz_rel");
+            Integer temp_return_code=test.getInt("returnCode");
+            String temp_return_message=test.getString("returnMessage");
+            if(temp_return_code==0){
+                JSONArray rels = test.getJSONArray("data");
+                for(int i=0;i<rels.length();i++)
+                {
+                    Relation newrel = new Relation();
+                    newrel.setReturn_code(temp_return_code);
+                    newrel.setReturn_message(temp_return_message);
+                    newrel.setinfo(rels.getJSONObject(i),"pmoz_rel");
+                    test11.add(newrel);
+                }
+            }
+            rel.setrelreturn(temp_return_message, temp_return_code);
+            //rel.setinfo(test, "pmoz_rel");
 
         }
         if(rel.getSubclass_of()!=null){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getSubclass_of());
             JSONObject test = new JSONObject(result);
-            rel.setinfo(test, "subclass_of");
+            Integer temp_return_code=test.getInt("returnCode");
+            String temp_return_message=test.getString("returnMessage");
+            if(temp_return_code==0){
+                JSONArray rels = test.getJSONArray("data");
+                for(int i=0;i<rels.length();i++)
+                {
+                    Relation newrel = new Relation();
+                    newrel.setReturn_code(temp_return_code);
+                    newrel.setReturn_message(temp_return_message);
+                    newrel.setinfo(rels.getJSONObject(i),"subclass_of");
+                    test11.add(newrel);
+                }
+            }
+            rel.setrelreturn(temp_return_message, temp_return_code);
+            //rel.setinfo(test, "subclass_of");
         }
         if(rel.getReturn_code()==-1) rel.setReturn_message("Please select a type of relation");
-        if(rel.getReturn_code()==0){
+        /*if(rel.getReturn_code()==0){
             test11.add(rel);
-        }
+        }*/
         if(all_returncode!=0){
             all_returncode=rel.getReturn_code();
             all_returnmessage=rel.getReturn_message();

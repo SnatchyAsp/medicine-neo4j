@@ -142,42 +142,38 @@ public class Relation {
         if(!node_info.getString("subclass_of").equals("null")) node.setSubclass_of(node_info.getString("subclass_of"));
         if(!node_info.getString("tree_number").equals("null")) node.setTree_number(node_info.getString("tree_number"));
     }
+    public void setrelreturn(String newreturnmessage,Integer newreturncode){
+        if(newreturncode!=0&&return_code!=0){
+            return_code=newreturncode;
+            return_message=newreturnmessage;
+            return;
+        }
+        if(newreturncode!=0&&return_code==0){
+            return;
+        }
+        if(newreturncode==0&&return_code!=0){
+            return_code=newreturncode;
+            return_message=newreturnmessage;
+        }
+    }
 
 
 
     public void setinfo(JSONObject data, String rel)
     {
 
-        int temp_return_code=data.getInt("returnCode");
-        String temp_return_message=data.getString("returnMessage");
-        if(temp_return_code!=0&&return_code!=0){
-            return_code=temp_return_code;
-            return_message=temp_return_message;
-            return;
-        }
-        if(temp_return_code!=0&&return_code==0){
-            return;
-        }
-        if(temp_return_code==0&&return_code!=0){
-            return_code=temp_return_code;
-            return_message=temp_return_message;
-        }
-        JSONArray data_array = data.getJSONArray("data");
-        JSONObject temp = data_array.getJSONObject(0);
-        InitNode(subject,temp.getJSONObject("subject"));
-        InitNode(object, temp.getJSONObject("object"));
+
+        InitNode(subject,data.getJSONObject("subject"));
+        InitNode(object, data.getJSONObject("object"));
 
 
-        arelation[] temp_relations = new arelation[data_array.length()];
-        for(int i=0;i<data_array.length();i++){
-            temp = data_array.getJSONObject(i);
-            JSONObject temp_rel = temp.getJSONObject("relation");
-            arelation temp_relation = new arelation();
-            if(!temp_rel.getString("pmid").equals("null")) temp_relation.setPmid(temp_rel.getString("pmid"));
-            if(!temp_rel.getString("relation").equals("null")) temp_relation.setRel_name(temp_rel.getString("relation"));
-            if(!temp_rel.getString("sentence").equals("null")) temp_relation.setSentence(temp_rel.getString("sentence"));
-            temp_relations[i] = temp_relation;
-        }
+        arelation[] temp_relations = new arelation[1];
+        JSONObject temp_rel = data.getJSONObject("relation");
+        arelation temp_relation = new arelation();
+        if(!temp_rel.getString("pmid").equals("null")) temp_relation.setPmid(temp_rel.getString("pmid"));
+        if(!temp_rel.getString("relation").equals("null")) temp_relation.setRel_name(temp_rel.getString("relation"));
+        if(!temp_rel.getString("sentence").equals("null")) temp_relation.setSentence(temp_rel.getString("sentence"));
+            temp_relations[0] = temp_relation;
         if(rel.equals("umls_pcnn")){
             umls_pcnn_relations = temp_relations;
         }

@@ -131,7 +131,7 @@
             %>
             demoEdges.push({
                 data:{
-                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getPmoz_rel()+i%>",
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getPmoz_rel()+testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>",
                     rel:"<%=temprel%>",
                     sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
                     pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
@@ -156,7 +156,7 @@
             %>
             demoEdges.push({
                 data:{
-                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getSubclass_of()+i%>",
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getSubclass_of()+testrel.subclass_of__relations[i].getinfo("subclass_of")%>",
                     rel:"<%=temprel%>",
                     sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
                     pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
@@ -182,7 +182,7 @@
             %>
             demoEdges.push({
                 data:{
-                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_pcnn()+i%>",
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_pcnn()+testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>",
                     rel:"<%=temprel%>",
                     sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
@@ -208,7 +208,7 @@
             %>
             demoEdges.push({
                 data:{
-                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_rel()+i%>",
+                    id:"<%=testrel.subject.getName()+testrel.object.getName()+testrel.getUmls_rel()+testrel.umls_rel_relations[i].getinfo("umls_rel")%>",
                     rel:"<%=temprel%>",
                     sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
