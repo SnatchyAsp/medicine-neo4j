@@ -22,10 +22,12 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.4.2/cytoscape.min.js"></script>
+    <script src="../js/code.js"></script>
+    <link href="../js/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../js/cytoscape-panzoom.js"></script>
 </head>
 
 <%
@@ -242,6 +244,7 @@
                 container: document.getElementById('cy'),
                 zoomingEnabled: false,
                 //panningEnabled: false,
+                //userZoomingEnabled:false,
 
                 elements: {
                     nodes: demoNodes,
@@ -318,19 +321,25 @@
             });
 
             cy.layout({
-                name: 'random'
+                name: 'concentric',
+                nodeDimensionsIncludeLabels: true,
+                padding: 5,
+                minNodeSpacing: 5
                 //name: 'grid'
             }).run();
             var showinfo_node = function(n){
-                cy.remove(cy.getElementById('info'));
+                var info_node =cy.getElementById('info')
+                var x_pos = info_node.position("x")
+                var y_pos = info_node.position("y")
+                cy.remove(info_node);
                 cy.add({
                     data:{
                         id:'info',
                         label:n.data('info')
                     },
                     position: {
-                        x: 10,
-                        y: 10
+                        x: x_pos,
+                        y: y_pos
                     }
                 })
                 var tempnode = cy.getElementById('info');
@@ -340,6 +349,9 @@
 
             }
             var showinfo_edge = function(n){
+                var info_node =cy.getElementById('info')
+                var x_pos = info_node.position("x")
+                var y_pos = info_node.position("y")
                 cy.remove(cy.getElementById('info'));
                 cy.add({
                     data:{
@@ -347,8 +359,8 @@
                         label:n.data('detail')
                     },
                     position: {
-                        x: 10,
-                        y: 10
+                        x: x_pos,
+                        y: y_pos
                     }
                 })
                 var tempedge = cy.getElementById('info');
@@ -365,6 +377,8 @@
                 var temppedge = cy.getElementById(this.id());
                 showinfo_edge(temppedge);
             })
+            cy.panzoom({
+            });
 
 
 
