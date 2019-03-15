@@ -138,10 +138,10 @@
                     sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
                     pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
                     type:"pmoz_rel",
-                    source:'<%=testrel.object.getinfo()%>',
-                    target:'<%=testrel.subject.getinfo()%>',
+                    source:'<%=testrel.subject.getinfo()%>',
+                    target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%=testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")+"\\n"+"Object"+testrel.object.getName()%>"
                 }
             });
             <%}
@@ -163,10 +163,10 @@
                     sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
                     pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
                     type:"subclass_of",
-                    source:'<%=testrel.object.getinfo()%>',
-                    target:'<%=testrel.subject.getinfo()%>',
+                    source:'<%=testrel.subject.getinfo()%>',
+                    target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%=testrel.subclass_of__relations[i].getinfo("subclass_of")%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.subclass_of__relations[i].getinfo("subclass_of")+"\\n"+"Object:"+testrel.subject.getName()%>"
 
                 }
             });
@@ -189,10 +189,10 @@
                     sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
                     type:"umls_pcnn",
-                    source:'<%=testrel.object.getinfo()%>',
-                    target:'<%=testrel.subject.getinfo()%>',
+                    source:'<%=testrel.subject.getinfo()%>',
+                    target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%=testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")+"\\n"+"Object:"+testrel.subject.getName()%>"
 
                 }
             });
@@ -215,10 +215,10 @@
                     sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
                     type:"umls_rel",
-                    source:'<%=testrel.object.getinfo()%>',
-                    target:'<%=testrel.subject.getinfo()%>',
+                    source:'<%=testrel.subject.getinfo()%>',
+                    target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%=testrel.umls_rel_relations[i].getinfo("umls_rel")%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_rel_relations[i].getinfo("umls_rel")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
             });
@@ -323,8 +323,7 @@
             cy.layout({
                 name: 'concentric',
                 nodeDimensionsIncludeLabels: true,
-                padding: 5,
-                minNodeSpacing: 5
+                //padding: 5
                 //name: 'grid'
             }).run();
             var showinfo_node = function(n){
