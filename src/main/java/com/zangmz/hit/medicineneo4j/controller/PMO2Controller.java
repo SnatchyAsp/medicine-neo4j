@@ -7,8 +7,7 @@ import com.zangmz.hit.medicineneo4j.pmo2domain.Instance;
 import com.zangmz.hit.medicineneo4j.pmo2domain.Klass;
 import com.zangmz.hit.medicineneo4j.pmo2domain.PMO2Relation;
 import com.zangmz.hit.medicineneo4j.services.PMO2Service;
-import jdk.internal.org.objectweb.asm.TypeReference;
-import org.hibernate.validator.constraints.pl.REGON;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.ui.ModelMap;

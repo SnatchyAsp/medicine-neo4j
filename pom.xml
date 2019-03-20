@@ -5,8 +5,8 @@
 
 	<groupId>com.zangmz.hit</groupId>
 	<artifactId>medicine-neo4j</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>0.1</version>
+	<packaging>war</packaging>
 
 	<name>medicine-neo4j</name>
 	<description>Demo project for Spring Boot</description>
@@ -153,8 +153,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.4.2.RELEASE</version>
 			</plugin>
 		</plugins>
+
+
+
 
 	</build>
 

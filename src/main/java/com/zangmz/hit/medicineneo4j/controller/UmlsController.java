@@ -23,7 +23,7 @@ public class UmlsController {
 
     @RequestMapping("getRelation")
     public void getRelation() {
-        umlsService.getPredicationBatch(110254325, 110297325, 110297325, 110304325);
+        umlsService.getPredicationBatch(643000, 843000, 843000, 1043000);
     }
 
     @RequestMapping("getRelationByType")
