@@ -141,7 +141,7 @@
                     source:'<%=testrel.subject.getinfo()%>',
                     target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")+"\\n"+"Object"+testrel.object.getName()%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")+"\\n"+"Object:"+testrel.object.getName()%>"
                 }
             });
             <%}
@@ -166,7 +166,7 @@
                     source:'<%=testrel.subject.getinfo()%>',
                     target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.subclass_of__relations[i].getinfo("subclass_of")+"\\n"+"Object:"+testrel.subject.getName()%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.subclass_of__relations[i].getinfo("subclass_of")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
             });
@@ -192,7 +192,7 @@
                     source:'<%=testrel.subject.getinfo()%>',
                     target:'<%=testrel.object.getinfo()%>',
                     ntype:'edge',
-                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")+"\\n"+"Object:"+testrel.subject.getName()%>"
+                    detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
             });
