@@ -32,7 +32,11 @@ public class Relation {
         public void setTree_number(String tree_number){
             //String new_tree=tree_number.replaceAll("\\$","\\\\n");
             String new_tree=tree_number.replaceAll("\\$","  ");
-            this.tree_number = new_tree;
+
+            this.tree_number = new_tree.replaceAll("\"","\'");
+        }
+        public void setName(String name){
+            this.name=name.replaceAll("\"","\'");
         }
         public String getinfo(){
             String ans = "";
@@ -65,6 +69,12 @@ public class Relation {
         private String pmid;
         private String sentence;
         private String rel_name;
+
+        public void setSentence(String sentence){
+            String new_sentence=sentence.replaceAll("\"","\'");
+            this.sentence=new_sentence;
+
+        }
         /*public String getRel_name() {
             if(rel_name==null) return "";
             return rel_name;

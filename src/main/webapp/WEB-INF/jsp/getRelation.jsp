@@ -138,9 +138,9 @@
                     sentence: "<%=testrel.pmoz_rel__relations[i].getSentence()%>",
                     pmid: "<%=testrel.pmoz_rel__relations[i].getPmid()%>",
                     type:"pmoz_rel",
-                    source:'<%=testrel.subject.getinfo()%>',
-                    target:'<%=testrel.object.getinfo()%>',
-                    ntype:'edge',
+                    source:"<%=testrel.subject.getinfo()%>",
+                    target:"<%=testrel.object.getinfo()%>",
+                    ntype:"edge",
                     detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.pmoz_rel__relations[i].getinfo("pmoz_rel")+"\\n"+"Object:"+testrel.object.getName()%>"
                 }
             });
@@ -163,9 +163,9 @@
                     sentence: "<%=testrel.subclass_of__relations[i].getSentence()%>",
                     pmid: "<%=testrel.subclass_of__relations[i].getPmid()%>",
                     type:"subclass_of",
-                    source:'<%=testrel.subject.getinfo()%>',
-                    target:'<%=testrel.object.getinfo()%>',
-                    ntype:'edge',
+                    source:"<%=testrel.subject.getinfo()%>",
+                    target:"<%=testrel.object.getinfo()%>",
+                    ntype:"edge",
                     detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.subclass_of__relations[i].getinfo("subclass_of")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
@@ -189,9 +189,9 @@
                     sentence: "<%=testrel.umls_pcnn_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_pcnn_relations[i].getPmid()%>",
                     type:"umls_pcnn",
-                    source:'<%=testrel.subject.getinfo()%>',
-                    target:'<%=testrel.object.getinfo()%>',
-                    ntype:'edge',
+                    source:"<%=testrel.subject.getinfo()%>",
+                    target:"<%=testrel.object.getinfo()%>",
+                    ntype:"edge",
                     detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_pcnn_relations[i].getinfo("umls_pcnn")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
@@ -215,9 +215,9 @@
                     sentence: "<%=testrel.umls_rel_relations[i].getSentence()%>",
                     pmid: "<%=testrel.umls_rel_relations[i].getPmid()%>",
                     type:"umls_rel",
-                    source:'<%=testrel.subject.getinfo()%>',
-                    target:'<%=testrel.object.getinfo()%>',
-                    ntype:'edge',
+                    source:"<%=testrel.subject.getinfo()%>",
+                    target:"<%=testrel.object.getinfo()%>",
+                    ntype:"edge",
                     detail:"<%="Subject:"+testrel.subject.getName()+"\\n"+testrel.umls_rel_relations[i].getinfo("umls_rel")+"\\n"+"Object:"+testrel.object.getName()%>"
 
                 }
@@ -226,17 +226,17 @@
             }%>
 
             demoNodes.push({
-                data: { name: '<%=testrel.object.getName()%>',
-                    id:'<%=testrel.object.getinfo()%>',
-                    info: '<%=testrel.object.getinfo()%>',
-                    ntype:'real'
+                data: { name: "<%=testrel.object.getName()%>",
+                    id:"<%=testrel.object.getinfo()%>",
+                    info: "<%=testrel.object.getinfo()%>",
+                    ntype:"real"
                 }
             })
             demoNodes.push({
-                data: { id: '<%=testrel.subject.getinfo()%>',
-                    name: '<%=testrel.subject.getName()%>',
-                    info:'<%=testrel.subject.getinfo()%>'},
-                ntype:'real'
+                data: { id: "<%=testrel.subject.getinfo()%>",
+                    name: "<%=testrel.subject.getName()%>",
+                    info:"<%=testrel.subject.getinfo()%>"},
+                ntype:"real"
             })
             <%}%>
             var cy = window.cy =cytoscape({
@@ -326,55 +326,60 @@
                 //padding: 5
                 //name: 'grid'
             }).run();
-            var showinfo_node = function(n){
+            var showinfo_node = function(n,x,y){
                 var info_node =cy.getElementById('info')
                 var x_pos = info_node.position("x")
                 var y_pos = info_node.position("y")
                 cy.remove(info_node);
                 cy.add({
                     data:{
-                        id:'info',
-                        label:n.data('info')
+                        id:"info",
+                        label:n.data("info")
                     },
                     position: {
-                        x: x_pos,
-                        y: y_pos
+                        x: x,
+                        y: y
                     }
                 })
-                var tempnode = cy.getElementById('info');
+                var tempnode = cy.getElementById("info");
                 tempnode.layout({
-                    name:'preset'
+                    name:"preset"
                 }).run();
 
             }
-            var showinfo_edge = function(n){
+            var showinfo_edge = function(n,x,y){
                 var info_node =cy.getElementById('info')
                 var x_pos = info_node.position("x")
                 var y_pos = info_node.position("y")
                 cy.remove(cy.getElementById('info'));
                 cy.add({
                     data:{
-                        id:'info',
-                        label:n.data('detail')
+                        id:"info",
+                        label:n.data("detail")
                     },
                     position: {
-                        x: x_pos,
-                        y: y_pos
+                        x: x,
+                        y: y
                     }
                 })
                 var tempedge = cy.getElementById('info');
                 tempedge.layout({
-                    name:'preset'
+                    name:"preset"
                 }).run();
 
             }
             cy.on('click','node[ntype="real]',function(evt){
                 var temppnode = cy.getElementById(this.id());
-                showinfo_node(temppnode);
+                var x = evt.position.x
+                var y = evt.position.y
+                showinfo_node(temppnode,x,y);
             })
+
             cy.on('click','edge[ntype="edge"]',function(evt){
                 var temppedge = cy.getElementById(this.id());
-                showinfo_edge(temppedge);
+                var x = evt.position.x
+                var y = evt.position.y
+                showinfo_edge(temppedge,x,y);
             })
             cy.panzoom({
             });
