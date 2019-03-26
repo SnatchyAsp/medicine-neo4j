@@ -30,13 +30,35 @@
                 <div class="form-group">
                     <label for="head_entity" class="col-sm-2 control-label">Subject</label>
                     <div class="col-sm-10">
-                        <input type="text" name="head_entity" class="form-control" id="head_entity"  placeholder="Subject">
+                        <input type="text" name="head_entity" class="form-control" list="head_entity_list" id="head_entity"  placeholder="Subject">
+                        <datalist id="head_entity_list">
+                            <%--<%for(int i=0;i<1000;i++){--%>
+                                <%--%>--%>
+                            <%--<option value="<%=i%>"<%=i%></option>--%>
+                            <%--<%--%>
+
+                            <%--}%>--%>
+                            <option value="Breast">Breast</option>
+                            <option value="Tumor Progression">Tumor Progression</option>
+                            <option value="Head">Head</option>
+                            <option value="Carcinoma">Carcinoma</option>
+                            <option value="Hereditary Malignant Neoplasm">Hereditary Malignant Neoplasm</option>
+                        </datalist>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tail_entity" class="col-sm-2 control-label">Object</label>
                     <div class="col-sm-10">
-                        <input type="text" name="tail_entity" class="form-control" id="tail_entity"  placeholder="Object">
+                        <input type="text" name="tail_entity" class="form-control" list="tail_entity_list" id="tail_entity"  placeholder="Object">
+                        <datalist id="tail_entity_list">
+                            <option value="Colonic Diseases">Colonic Diseases</option>
+                            <option value="Body Regions">Body Regions</option>
+                            <option value="Breast">Breast</option>
+                            <option value="Carcinoma">Carcinoma</option>
+                            <option value="Neoplasms">Neoplasms</option>
+
+                        </datalist>
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
