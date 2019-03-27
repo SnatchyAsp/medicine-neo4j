@@ -85,7 +85,7 @@ public class UmlsRelMapper {
                 umlsRelation.setId(record.get("rel").get("ID").asString());
             }
             if(record.get("rel").get("sentence").asString()!=null){
-                umlsRelation.setSentence(record.get("rel").get("sentence").asString());
+                umlsRelation.setSentence(record.get("rel").get("sentence").asString().replace("\"", "\\\""));
             }
             if (record.get("rel").get("relation").asString()!=null){
                 umlsRelation.setRelation(record.get("rel").get("relation").asString());
