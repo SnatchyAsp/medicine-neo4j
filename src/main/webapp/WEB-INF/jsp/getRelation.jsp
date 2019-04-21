@@ -22,7 +22,8 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="../js/code.js"></script>
+<%--    <script src="../js/code.js"></script>--%>
+    <script src="../js/cytoscape.umd.js"></script>
     <link href="../js/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -79,10 +80,10 @@
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
-                    <label><input name="umls_pcnn" type="checkbox" value="umls_pcnn" />umls_pcnn&nbsp;&nbsp;</label>
-                    <label><input name="umls_rel" type="checkbox" value="umls_rel" />umls_rel&nbsp;&nbsp;</label>
-                    <label><input name="pmoz_rel" type="checkbox" value="pmoz_rel" />pmoz_rel&nbsp;&nbsp;</label>
-                    <label><input name="subclass_of" type="checkbox" value="subclass_of" />subclass_of&nbsp;&nbsp;</label>
+                    <label><input name="umls_pcnn" type="checkbox" value="umls_pcnn" checked />umls_pcnn&nbsp;&nbsp;</label>
+                    <label><input name="umls_rel" type="checkbox" value="umls_rel" checked/>umls_rel&nbsp;&nbsp;</label>
+                    <label><input name="pmoz_rel" type="checkbox" value="pmoz_rel" checked/>pmoz_rel&nbsp;&nbsp;</label>
+                    <label><input name="subclass_of" type="checkbox" value="subclass_of" checked/>subclass_of&nbsp;&nbsp;</label>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -256,7 +257,7 @@
             var cy = window.cy =cytoscape({
 
                 container: document.getElementById('cy'),
-                zoomingEnabled: false,
+                //zoomingEnabled: false,
                 //panningEnabled: false,
                 //userZoomingEnabled:false,
 
@@ -389,6 +390,7 @@
                 var y = evt.position.y
                 showinfo_node(temppnode,x,y);
             })
+
 
             cy.on('click','edge[ntype="edge"]',function(evt){
                 var temppedge = cy.getElementById(this.id());

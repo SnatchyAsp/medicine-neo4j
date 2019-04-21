@@ -26,14 +26,14 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="relation">
             <div style="padding-top:40px"></div>
-            <form class="form-horizontal" action="getRelation" method="post">
+            <form class="form-horizontal" action="show" method="post">
                 <div class="form-group">
                     <label for="head_entity" class="col-sm-2 control-label">Subject</label>
                     <div class="col-sm-10">
                         <input type="text" name="head_entity" class="form-control" list="head_entity_list" id="head_entity"  placeholder="Subject">
                         <datalist id="head_entity_list">
                             <%--<%for(int i=0;i<1000;i++){--%>
-                                <%--%>--%>
+                            <%--%>--%>
                             <%--<option value="<%=i%>"<%=i%></option>--%>
                             <%--<%--%>
 
@@ -62,10 +62,10 @@
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
-                    <label><input name="umls_pcnn" type="checkbox" value="umls_pcnn" checked/>umls_pcnn&nbsp;&nbsp;</label>
-                    <label><input name="umls_rel" type="checkbox" value="umls_rel" checked/>umls_rel&nbsp;&nbsp;</label>
-                    <label><input name="pmoz_rel" type="checkbox" value="pmoz_rel" checked/>pmoz_rel&nbsp;&nbsp;</label>
-                    <label><input name="subclass_of" type="checkbox" value="subclass_of" checked/>subclass_of&nbsp;&nbsp;</label>
+                    <label><input name="umls_pcnn" type="checkbox" value="true" checked/>umls_pcnn&nbsp;&nbsp;</label>
+                    <label><input name="umls_rel" type="checkbox"  value="true" checked/>umls_rel&nbsp;&nbsp;</label>
+                    <label><input name="pmoz_rel" type="checkbox"  value="true" checked/>pmoz_rel&nbsp;&nbsp;</label>
+                    <label><input name="subclass_of" type="checkbox"  value="true" checked/>subclass_of&nbsp;&nbsp;</label>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
