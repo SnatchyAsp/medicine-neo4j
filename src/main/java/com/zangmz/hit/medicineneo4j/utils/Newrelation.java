@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -54,19 +55,19 @@ public class Newrelation {
                 ans += name;
             }
             if(subclass_of!=null){
-                ans += "\\nSubclass of:";
+                ans += "<br>Subclass of:";
                 ans+=subclass_of;
             }
             if(tree_number!=null){
-                ans+="\\nTree number:";
+                ans+="<br>Tree number:";
                 ans+=tree_number;
             }
             if(mCID!=null){
-                ans+="\\nMTID:";
+                ans+="<br>MTID:";
                 ans+=mCID;
             }
             if(mTID!=null) {
-                ans += "\\nMCID:";
+                ans += "<br>MCID:";
                 ans += mTID;
             }
             return ans;
@@ -78,14 +79,28 @@ public class Newrelation {
         private String pmid;
         private String sentence;
 
+        public void setPmid(String pmid){
+            if(pmid.equals("null")){
+                this.pmid =null;
+            }
+            else{
+                this.pmid = pmid;
+            }
+        }
+
         public void setSentence(String sentence){
             String new_sentence=sentence.replaceAll("\"","\'");
-            this.sentence=new_sentence;
+            if(new_sentence.equals("null")){
+                this.sentence =null;
+            }
+            else{
+                this.sentence=new_sentence;
+            }
         }
         public String getinfo(){
             String ans="";
             if(pmid!=null){
-                ans+="Pmid:"+pmid+"\\n";
+                ans+="Pmid:"+pmid+"<br>";
             }
             if(sentence!=null){
                 ans+="Sentence:"+sentence;
@@ -94,15 +109,30 @@ public class Newrelation {
         }
 
     }
+    @Getter
+    @Setter
     public static class info{
         public NewNode subject = new NewNode();
         public NewNode object = new NewNode();
-        private String rel_name,type_name;
+        private String rel_name,type_name,subject_name,object_name,info;
         private String rels;
+        public String getInfo(){
+            String ans="";
+            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Type:"+this.type_name+"<br>"+rels;
+            return ans;
+        }
+        public void setRel_name(String rel_name){
+            if(rel_name.equals("null")){
+                this.rel_name = null;
+            }
+            else{
+                this.rel_name = rel_name;
+            }
+        }
     }
 
-    private Map<String, info> dic;
-    public void infoin(JSONArray datas, String type_name){
+    private Map<String, info> dic = new HashMap<>();
+    public Map<String, info> infoin(JSONArray datas, String type_name){
 
         for(int i=0; i<datas.size();i++){
             com.alibaba.fastjson.JSONObject data=datas.getJSONObject(i);
@@ -112,20 +142,26 @@ public class Newrelation {
             String key = sub_name + "$" + obj_name + "$" + rel_name + "$" + type_name;
             if(dic.containsKey(key)){
                 info a = dic.get(key);
-
+                String old_rels = a.getRels();
+                arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
+                a.setRels(old_rels+"<br><br>"+rel.getinfo());
             }
             else{
-
+                info a = new info();
+                a.setSubject(JSON.toJavaObject(data.getJSONObject("subject"),NewNode.class));
+                a.setObject(JSON.toJavaObject(data.getJSONObject("object"),NewNode.class));
+                a.setRel_name(rel_name);
+                a.setType_name(type_name);
+                arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
+                a.setRels(rel.getinfo());
+                a.setObject_name(obj_name);
+                a.setSubject_name(sub_name);
+                dic.put(key, a);
             }
-            NewNode object = JSON.toJavaObject(data.getJSONObject("object"),NewNode.class);
-            NewNode subject = JSON.toJavaObject(data.getJSONObject("subject"),NewNode.class);
-            System.out.println("111");
 
 
         }
-
-
-
+        return dic;
 
     }
 

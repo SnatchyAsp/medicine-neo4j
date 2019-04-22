@@ -22,6 +22,9 @@ import javax.annotation.Resource;
 import javax.jws.WebParam;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.alibaba.fastjson.JSONObject;
 
 @RestController
@@ -162,10 +165,11 @@ public class PMO2Controller {
 //        return new ModelAndView("getRelation", "command", new Relation());
 //    }
     @RequestMapping(value = "getRelation", method = RequestMethod.POST)
-    public String getRelation(@ModelAttribute Webinfo webinfo){
+    public Map<String, Newrelation.info> getRelation(@ModelAttribute Webinfo webinfo){
 
         Integer return_code=-1;
         String return_message="";
+        Map<String, Newrelation.info> rels = new HashMap<>();
         if(webinfo.getHead_entity().equals("")){
              webinfo.setHead_entity("###");
         }
@@ -175,11 +179,13 @@ public class PMO2Controller {
         if(webinfo.isPmoz_rel()){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(webinfo.getHead_entity(), webinfo.getTail_entity(), "pmoz_rel");
             JSONObject jsonObject = JSON.parseObject(JSONObject.toJSONString(result));
+
             if(jsonObject.getInteger("returnCode")==0){
                 return_code = jsonObject.getInteger("returnCode");
                 return_message = jsonObject.getString("returnMessage");
                 Newrelation newrelation = new Newrelation();
-                newrelation.infoin(jsonObject.getJSONArray("data"),"pmoz_rel");
+                Map<String, Newrelation.info> rel = newrelation.infoin(jsonObject.getJSONArray("data"),"pmoz_rel");
+                rels.putAll(rel);
 
             }
             else{
@@ -197,8 +203,8 @@ public class PMO2Controller {
                 return_code = jsonObject.getInteger("returnCode");
                 return_message = jsonObject.getString("returnMessage");
                 Newrelation newrelation = new Newrelation();
-                newrelation.infoin(jsonObject.getJSONArray("data"),"subclass_of");
-
+                Map<String, Newrelation.info> rel = newrelation.infoin(jsonObject.getJSONArray("data"),"subclass_of");
+                rels.putAll(rel);
 
 
 
@@ -218,8 +224,8 @@ public class PMO2Controller {
                 return_code = jsonObject.getInteger("returnCode");
                 return_message = jsonObject.getString("returnMessage");
                 Newrelation newrelation = new Newrelation();
-                newrelation.infoin(jsonObject.getJSONArray("data"),"umls_pcnn");
-
+                Map<String, Newrelation.info> rel = newrelation.infoin(jsonObject.getJSONArray("data"),"umls_pcnn");
+                rels.putAll(rel);
 
 
 
@@ -238,8 +244,8 @@ public class PMO2Controller {
                 return_code = jsonObject.getInteger("returnCode");
                 return_message = jsonObject.getString("returnMessage");
                 Newrelation newrelation = new Newrelation();
-                newrelation.infoin(jsonObject.getJSONArray("data"),"umls_rel");
-
+                Map<String, Newrelation.info> rel = newrelation.infoin(jsonObject.getJSONArray("data"),"umls_rel");
+                rels.putAll(rel);
 
 
 
@@ -251,8 +257,11 @@ public class PMO2Controller {
                 }
             }
         }
-
-        return "111";
+        Newrelation.info temp = new Newrelation.info();
+        temp.setSubject_name(return_code.toString());
+        temp.setObject_name(return_message);
+        rels.put("return",temp);
+        return rels;
     }
 //    public ModelAndView getRelation(@ModelAttribute("SpringWeb")Relation rel, ModelMap model){
 //        RelationListRes relationListRes = null;
