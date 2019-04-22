@@ -16,19 +16,63 @@
     <style type="text/css">
         #cy {
             height: 1000px;
-            width: 1500px;
+            width: 1100px;
+            position: relative;
+            top: -300px;
             background-color: #f9f9f9;
 
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<%--    <script src="../js/code.js"></script>--%>
-    <script src="../js/cytoscape.umd.js"></script>
+    <script src="../js/code.js"></script>
     <link href="../js/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../js/cytoscape-panzoom.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../css/ztree_css/demo.css" type="text/css">
+    <link rel="stylesheet" href="../../css/ztree_css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../../js/ztree_js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../js/ztree_js/jquery.ztree.core.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var setting = {
+            view: {
+                showIcon: false,
+                fontCss: getFont,
+                nameIsHTML: true
+            },
+            async: {
+                enable: true,
+                url:"getNodes",
+                autoParam:["id"],
+                //otherParam:{"otherParam":"zTreeAsyncTest"},
+                //dataFilter: filter
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                //beforeClick: beforeClick,
+                onClick: onClick
+            }
+
+        };
+        function getFont(treeId, node) {
+            return node.font ? node.font : {};
+        }
+        function onClick(event, treeId, treeNode, clickFlag) {
+            $("#head_entity").attr("value",treeNode.name);
+            console.log("onlick");
+        }
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting);
+        });
+        //-->
+    </SCRIPT>
 </head>
 
 <%
@@ -47,89 +91,81 @@
         <li role="presentation" class="active"><a href="#relation" aria-controls="relation" role="tab" data-toggle="tab">Relation</a></li>
         <li role="presentation"><a href="#Entity" aria-controls="Entity" role="tab" data-toggle="tab">Entity</a></li>
     </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="relation">
-            <div style="padding-top:40px"></div>
-            <form class="form-horizontal" action="getRelation" method="post">
-                <div class="form-group">
-                    <label for="head_entity" class="col-sm-2 control-label">Subject</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="head_entity" class="form-control" list="head_entity_list" id="head_entity" placeholder="<%=atestrel.getHead_entity()%>" value="<%=atestrel.getHead_entity()%>">
-                        <datalist id="head_entity_list">
-                            <option value="Breast">Breast</option>
-                            <option value="Tumor Progression">Tumor Progression</option>
-                            <option value="Head">Head</option>
-                            <option value="Carcinoma">Carcinoma</option>
-                            <option value="Hereditary Malignant Neoplasm">Hereditary Malignant Neoplasm</option>
-                        </datalist>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="tail_entity" class="col-sm-2 control-label">Object</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="tail_entity" class="form-control" list="tail_entity_list" id="tail_entity" placeholder="<%=atestrel.getTail_entity()%>" value="<%=atestrel.getTail_entity()%>">
-                        <datalist id="tail_entity_list">
-                            <option value="Colonic Diseases">Colonic Diseases</option>
-                            <option value="Body Regions">Body Regions</option>
-                            <option value="Breast">Breast</option>
-                            <option value="Carcinoma">Carcinoma</option>
-                            <option value="Neoplasms">Neoplasms</option>
-                        </datalist>
-                    </div>
-                </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <label><input name="umls_pcnn" type="checkbox" value="umls_pcnn" checked />umls_pcnn&nbsp;&nbsp;</label>
-                    <label><input name="umls_rel" type="checkbox" value="umls_rel" checked/>umls_rel&nbsp;&nbsp;</label>
-                    <label><input name="pmoz_rel" type="checkbox" value="pmoz_rel" checked/>pmoz_rel&nbsp;&nbsp;</label>
-                    <label><input name="subclass_of" type="checkbox" value="subclass_of" checked/>subclass_of&nbsp;&nbsp;</label>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">query</button>
-                    </div>
-                </div>
-
-            </form>
-            <form class="form-horizontal" action="input" method="post">
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">clear</button>
-                    </div>
-                </div>
-            </form>
-            <div id="relation_result"></div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="zTreeDemoBackground left">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="Entity">
-            <div style="padding-top:40px"></div>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="input_entity" class="col-sm-2 control-label">entity</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_entity" placeholder="head entity">
+
+        <!-- Tab panes -->
+        <div class="tab-content col-sm-9"><!--style="margin-left: 280px"-->
+            <div role="tabpanel" class="tab-pane active" id="relation">
+                <div style="padding-top:40px"></div>
+                <form class="form-horizontal" action="getRelation" method="post">
+                    <div class="form-group">
+                        <label for="head_entity" class="col-sm-2 control-label">Subject</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="head_entity" class="form-control" id="head_entity" placeholder="<%=atestrel.getHead_entity()%>" value="<%=atestrel.getHead_entity()%>">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
+                    <div class="form-group">
+                        <label for="tail_entity" class="col-sm-2 control-label">Object</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="tail_entity" class="form-control" id="tail_entity" placeholder="<%=atestrel.getTail_entity()%>" value="<%=atestrel.getTail_entity()%>">
+                        </div>
+                    </div>
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">query</button>
+                        <label><input name="umls_pcnn" type="checkbox" value="umls_pcnn" />umls_pcnn&nbsp;&nbsp;</label>
+                        <label><input name="umls_rel" type="checkbox" value="umls_rel" />umls_rel&nbsp;&nbsp;</label>
+                        <label><input name="pmoz_rel" type="checkbox" value="pmoz_rel" />pmoz_rel&nbsp;&nbsp;</label>
+                        <label><input name="subclass_of" type="checkbox" value="subclass_of" />subclass_of&nbsp;&nbsp;</label>
                     </div>
-                </div>
-            </form>
-            <div id="entity_result"></div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">query</button>
+                        </div>
+                    </div>
+
+                </form>
+                <form class="form-horizontal" action="input" method="post">
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">clear</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="relation_result"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="Entity">
+                <div style="padding-top:40px"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="input_entity" class="col-sm-2 control-label">entity</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="input_entity" placeholder="head entity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">query</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="entity_result"></div>
+            </div>
         </div>
+
     </div>
-
-</div>
 
 <%if(all_returncode==0){
     if(atestrel.getReturn_code()!=0){%>
-<div class="col-sm-offset-2 col-sm-10" >
+<div class="col-sm-offset-3 col-sm-9" >
     <h1><%=atestrel.getReturn_message()%></h1>
 </div>
     <%}%>
 
-<div class="col-sm-offset-2 col-sm-10" id="cy" style="width: 1500px;height:1000px;">
+<div class="col-sm-offset-3 col-sm-9" id="cy" style="width: 1100px;height:1000px">
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             var demoEdges = [];
@@ -257,7 +293,7 @@
             var cy = window.cy =cytoscape({
 
                 container: document.getElementById('cy'),
-                //zoomingEnabled: false,
+                zoomingEnabled: false,
                 //panningEnabled: false,
                 //userZoomingEnabled:false,
 
@@ -271,8 +307,7 @@
                         selector: 'node',
                         style: {
                             'background-color': '#666',
-                            'label': 'data(name)',
-                            'font-size':40
+                            'label': 'data(name)'
                         }
                     },
                     {
@@ -391,7 +426,6 @@
                 showinfo_node(temppnode,x,y);
             })
 
-
             cy.on('click','edge[ntype="edge"]',function(evt){
                 var temppedge = cy.getElementById(this.id());
                 var x = evt.position.x
@@ -415,4 +449,5 @@ else{
     <h1><%=all_returnmessage%></h1>
 </div>
 <%}%>
+</div>
 </body>

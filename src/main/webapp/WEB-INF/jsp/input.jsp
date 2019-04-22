@@ -12,6 +12,48 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../css/ztree_css/demo.css" type="text/css">
+    <link rel="stylesheet" href="../../css/ztree_css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../../js/ztree_js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../js/ztree_js/jquery.ztree.core.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var setting = {
+            view: {
+                showIcon: false,
+                fontCss: getFont,
+                nameIsHTML: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            async: {
+                enable: true,
+                url:"getNodes",
+                autoParam:["id"],
+                //otherParam:{"otherParam":"zTreeAsyncTest"},
+                //dataFilter: filter
+            },
+            callback: {
+                //beforeClick: beforeClick,
+                onClick: onClick
+            }
+        };
+        function getFont(treeId, node) {
+            return node.font ? node.font : {};
+        }
+        function onClick(event, treeId, treeNode, clickFlag) {
+            $("#head_entity").attr("value",treeNode.name);
+            console.log("onlick");
+        }
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting);
+        });
+        //-->
+    </SCRIPT>
 </head>
 <body>
 <div>
@@ -23,7 +65,7 @@
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content  col-sm-9" >
         <div role="tabpanel" class="tab-pane active" id="relation">
             <div style="padding-top:40px"></div>
             <form class="form-horizontal" action="getRelation" method="post">
@@ -94,6 +136,9 @@
         </div>
     </div>
 
+    <div class="zTreeDemoBackground left" style="position: relative;bottom: 180px;left: 50px">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
 </div>
 </body>
 </html>

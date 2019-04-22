@@ -12,6 +12,48 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../css/ztree_css/demo.css" type="text/css">
+    <link rel="stylesheet" href="../../css/ztree_css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../../js/ztree_js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../js/ztree_js/jquery.ztree.core.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var setting = {
+            view: {
+                showIcon: false,
+                fontCss: getFont,
+                nameIsHTML: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            async: {
+                enable: true,
+                url:"../pmo2/getNodes",
+                autoParam:["id"],
+                //otherParam:{"otherParam":"zTreeAsyncTest"},
+                //dataFilter: filter
+            },
+            callback: {
+                //beforeClick: beforeClick,
+                onClick: onClick
+            }
+        };
+        function getFont(treeId, node) {
+            return node.font ? node.font : {};
+        }
+        function onClick(event, treeId, treeNode, clickFlag) {
+            $("#head_entity").attr("value",treeNode.name);
+            console.log("onlick");
+        }
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting);
+        });
+        //-->
+    </SCRIPT>
 </head>
 <body>
 <div>
@@ -22,77 +64,86 @@
         <li role="presentation"><a href="#Entity" aria-controls="Entity" role="tab" data-toggle="tab">Entity</a></li>
     </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="relation">
-            <div style="padding-top:40px"></div>
-            <form class="form-horizontal" action="show" method="post">
-                <div class="form-group">
-                    <label for="head_entity" class="col-sm-2 control-label">Subject</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="head_entity" class="form-control" list="head_entity_list" id="head_entity"  placeholder="Subject">
-                        <datalist id="head_entity_list">
-                            <%--<%for(int i=0;i<1000;i++){--%>
-                            <%--%>--%>
-                            <%--<option value="<%=i%>"<%=i%></option>--%>
-                            <%--<%--%>
-
-                            <%--}%>--%>
-                            <option value="Breast">Breast</option>
-                            <option value="Tumor Progression">Tumor Progression</option>
-                            <option value="Head">Head</option>
-                            <option value="Carcinoma">Carcinoma</option>
-                            <option value="Hereditary Malignant Neoplasm">Hereditary Malignant Neoplasm</option>
-                        </datalist>
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="tail_entity" class="col-sm-2 control-label">Object</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="tail_entity" class="form-control" list="tail_entity_list" id="tail_entity"  placeholder="Object">
-                        <datalist id="tail_entity_list">
-                            <option value="Colonic Diseases">Colonic Diseases</option>
-                            <option value="Body Regions">Body Regions</option>
-                            <option value="Breast">Breast</option>
-                            <option value="Carcinoma">Carcinoma</option>
-                            <option value="Neoplasms">Neoplasms</option>
-
-                        </datalist>
-                    </div>
-                </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <label><input name="umls_pcnn" type="checkbox" value="true" checked/>umls_pcnn&nbsp;&nbsp;</label>
-                    <label><input name="umls_rel" type="checkbox"  value="true" checked/>umls_rel&nbsp;&nbsp;</label>
-                    <label><input name="pmoz_rel" type="checkbox"  value="true" checked/>pmoz_rel&nbsp;&nbsp;</label>
-                    <label><input name="subclass_of" type="checkbox"  value="true" checked/>subclass_of&nbsp;&nbsp;</label>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">query</button>
-                    </div>
-                </div>
-            </form>
-            <div id="relation_result"></div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="zTreeDemoBackground left">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="Entity">
-            <div style="padding-top:40px"></div>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="input_entity" class="col-sm-2 control-label">entity</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_entity" placeholder="head entity">
+        <!-- Tab panes -->
+        <div class="tab-content col-sm-9">
+            <div role="tabpanel" class="tab-pane active" id="relation">
+                <div style="padding-top:40px"></div>
+                <form class="form-inline" action="show" method="post">
+                    <div class="form-group">
+                        <label for="head_entity" class="col-sm-2 control-label">Subject</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="head_entity" class="form-control" list="head_entity_list" id="head_entity"  placeholder="Subject">
+                            <datalist id="head_entity_list">
+                                <%--<%for(int i=0;i<1000;i++){--%>
+                                <%--%>--%>
+                                <%--<option value="<%=i%>"<%=i%></option>--%>
+                                <%--<%--%>
+
+                                <%--}%>--%>
+                                <option value="Breast">Breast</option>
+                                <option value="Tumor Progression">Tumor Progression</option>
+                                <option value="Head">Head</option>
+                                <option value="Carcinoma">Carcinoma</option>
+                                <option value="Hereditary Malignant Neoplasm">Hereditary Malignant Neoplasm</option>
+                            </datalist>
+
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">query</button>
+                    <div class="form-group">
+                        <label for="tail_entity" class="col-sm-2 control-label">Object</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="tail_entity" class="form-control" list="tail_entity_list" id="tail_entity"  placeholder="Object">
+                            <datalist id="tail_entity_list">
+                                <option value="Colonic Diseases">Colonic Diseases</option>
+                                <option value="Body Regions">Body Regions</option>
+                                <option value="Breast">Breast</option>
+                                <option value="Carcinoma">Carcinoma</option>
+                                <option value="Neoplasms">Neoplasms</option>
+
+                            </datalist>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <div id="entity_result"></div>
+                    <div class="col-sm-7">
+                        <label><input name="umls_pcnn" type="checkbox" value="true" checked/>umls_pcnn&nbsp;&nbsp;</label>
+                        <label><input name="umls_rel" type="checkbox"  value="true"/>umls_rel&nbsp;&nbsp;</label>
+                        <%--<label><input name="pmoz_rel" type="checkbox"  value="true" checked/>pmoz_rel&nbsp;&nbsp;</label>--%>
+                        <%--<label><input name="subclass_of" type="checkbox"  value="true" checked/>subclass_of&nbsp;&nbsp;</label>--%>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-default">query</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="relation_result"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="Entity">
+                <div style="padding-top:40px"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="input_entity" class="col-sm-2 control-label">entity</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="input_entity" placeholder="head entity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-default">query</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="entity_result"></div>
+            </div>
         </div>
     </div>
+
+
 
 </div>
 </body>

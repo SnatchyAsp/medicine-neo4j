@@ -14,12 +14,15 @@ import com.zangmz.hit.medicineneo4j.utils.Newrelation;
 import com.zangmz.hit.medicineneo4j.utils.Webinfo;
 import org.json.JSONArray;
 
+import org.neo4j.ogm.request.Request;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,107 +66,6 @@ public class PMO2Controller {
 
 
 
-//    @RequestMapping(value = "getRelation", method = RequestMethod.POST)
-//    public ModelAndView getRelation(@ModelAttribute("SpringWeb")Relation rel, ModelMap model){
-//        RelationListRes relationListRes = null;
-//        if(rel.getHead_entity()=="") rel.setHead_entity("###");
-//        if(rel.getTail_entity()=="") rel.setTail_entity("###");
-//        if(rel.getUmls_pcnn()!= null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_pcnn());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"umls_pcnn");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "umls_pcnn");
-//        }
-//        if(rel.getUmls_rel()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_rel());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"umls_rel");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "umls_rel");
-//        }
-//        if(rel.getPmoz_rel()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getPmoz_rel());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"pmoz_rel");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "pmoz_rel");
-//
-//        }
-//        if(rel.getSubclass_of()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getSubclass_of());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"subclass_of");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "subclass_of");
-//        }
-//        if(rel.getReturn_code()==-1) rel.setReturn_message("Please select a type of relation");
-//        /*if(rel.getReturn_code()==0){
-//            test11.add(rel);
-//        }*/
-//        if(all_returncode!=0){
-//            all_returncode=rel.getReturn_code();
-//            all_returnmessage=rel.getReturn_message();
-//            }
-//
-//        String test = com.alibaba.fastjson.JSON.toJSONString(rel);
-//        model.addAttribute("rel",test);
-//        String testlist = com.alibaba.fastjson.JSON.toJSONString(test11);
-//        model.addAttribute("test11",testlist);
-//        model.addAttribute("all_returncode",all_returncode);
-//        model.addAttribute("all_returnmessage",all_returnmessage);
-//
-//
-//        return new ModelAndView("getRelation", "command", new Relation());
-//    }
     @RequestMapping(value = "getRelation", method = RequestMethod.POST)
     public Map<String, Newrelation.info> getRelation(@ModelAttribute Webinfo webinfo){
 
@@ -178,7 +80,7 @@ public class PMO2Controller {
         }
         if(webinfo.isPmoz_rel()){
             BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(webinfo.getHead_entity(), webinfo.getTail_entity(), "pmoz_rel");
-            JSONObject jsonObject = JSON.parseObject(JSONObject.toJSONString(result));
+            com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(com.alibaba.fastjson.JSONObject.toJSONString(result));
 
             if(jsonObject.getInteger("returnCode")==0){
                 return_code = jsonObject.getInteger("returnCode");
@@ -263,106 +165,7 @@ public class PMO2Controller {
         rels.put("return",temp);
         return rels;
     }
-//    public ModelAndView getRelation(@ModelAttribute("SpringWeb")Relation rel, ModelMap model){
-//        RelationListRes relationListRes = null;
-//        if(rel.getHead_entity()=="") rel.setHead_entity("###");
-//        if(rel.getTail_entity()=="") rel.setTail_entity("###");
-//        if(rel.getUmls_pcnn()!= null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_pcnn());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"umls_pcnn");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "umls_pcnn");
-//        }
-//        if(rel.getUmls_rel()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getUmls_rel());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"umls_rel");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "umls_rel");
-//        }
-//        if(rel.getPmoz_rel()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getPmoz_rel());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"pmoz_rel");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "pmoz_rel");
-//
-//        }
-//        if(rel.getSubclass_of()!=null){
-//            BaseRes<PMO2Relation> result = pmo2Service.getRelationBySubjectAndObject(rel.getHead_entity(), rel.getTail_entity(), rel.getSubclass_of());
-//            JSONObject test = new JSONObject(result);
-//            Integer temp_return_code=test.getInt("returnCode");
-//            String temp_return_message=test.getString("returnMessage");
-//            if(temp_return_code==0){
-//                JSONArray rels = test.getJSONArray("data");
-//                for(int i=0;i<rels.length();i++)
-//                {
-//                    Relation newrel = new Relation();
-//                    newrel.setReturn_code(temp_return_code);
-//                    newrel.setReturn_message(temp_return_message);
-//                    newrel.setinfo(rels.getJSONObject(i),"subclass_of");
-//                    test11.add(newrel);
-//                }
-//            }
-//            rel.setrelreturn(temp_return_message, temp_return_code);
-//            //rel.setinfo(test, "subclass_of");
-//        }
-//        if(rel.getReturn_code()==-1) rel.setReturn_message("Please select a type of relation");
-//            /*if(rel.getReturn_code()==0){
-//                test11.add(rel);
-//            }*/
-//        if(all_returncode!=0){
-//            all_returncode=rel.getReturn_code();
-//            all_returnmessage=rel.getReturn_message();
-//        }
-//
-//        String test = com.alibaba.fastjson.JSON.toJSONString(rel);
-//        model.addAttribute("rel",test);
-//        String testlist = com.alibaba.fastjson.JSON.toJSONString(test11);
-//        model.addAttribute("test11",testlist);
-//        model.addAttribute("all_returncode",all_returncode);
-//        model.addAttribute("all_returnmessage",all_returnmessage);
-//
-//
-//        return new ModelAndView("getRelation", "command", new Relation());
-//    }
+
 
     @RequestMapping(value = "/input")
     public ModelAndView user() {
@@ -373,20 +176,15 @@ public class PMO2Controller {
     }
 
 
-
-
-
-
-    @RequestMapping(value = "/b")
-    public Webinfo bbb(String subject){
-        System.out.println(subject);
-        Webinfo webinfo = new Webinfo();
-        webinfo.setHead_entity("aaa");
-        webinfo.setTail_entity("111");
-        return webinfo;
+    @RequestMapping("/getNodes")
+    public String getnodes(HttpServletRequest req) {
+        String id = req.getParameter("id");
+        if(id == null){
+            id = "0";
+        }
+        System.out.println(id);
+        return pmo2Service.getNodes(id);
+        //return "get request";
     }
-
-
-
 
 }

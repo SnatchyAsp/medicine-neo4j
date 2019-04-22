@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.Buffer;
 import java.util.*;
 
@@ -34,6 +35,10 @@ public class PMO2Service {
 
 
     private UmlsRelMapper umlsRelMapper = new UmlsRelMapper();
+
+    private List<Long> initpath = Arrays.asList(new Long(1614),new Long(2336),new Long(2373),new Long(2671),new Long(2738));
+
+    //1614 2336 2373 2671 2738
 
     @Transactional(readOnly = true)
     public BaseRes<PMO2Relation> getRelationBySubject(String subject, String relationType){
@@ -242,6 +247,97 @@ public class PMO2Service {
         }
 
         return id;
+    }
+
+    @Transactional(readOnly = true)
+    public String getNodes(String id){
+        String tree = "[";
+        if(id.equals("0")){
+            System.out.println("id==0");
+            List<Klass> nodes = new ArrayList<Klass>();
+            Long nid = new Long(0);
+            String color="";
+            for(int i=1;i<11;i++){
+                String treeno = "T"+i+"$";
+                System.out.println(treeno);
+                Klass troot = klassRep.getKlassbyTreeNo(treeno);
+                nodes.add(troot);
+
+            }
+            List<Klass> snodes = new ArrayList<Klass>();
+            Long pid = new Long(0);
+            for(int j = 0;j<5;j++){
+                nid = initpath.get(j);
+                for(Klass k:nodes){
+                    if(klassRep.getrelation(k.getId()) != null){
+                        color = "#000000";
+                    }
+                    else {
+                        color = "#C0C0C0";
+                    }
+
+                //System.out.println(troot.toString());
+                    if(j == 0){
+                        tree = tree+"{id:\"t"+k.getId().toString()+"\",pId:\"0\",name:\""+k.getName()+"\",isParent:true,font:{'color':'"+color+"'}";
+                    }
+                    else {
+                        tree = tree+"{id:\"t"+k.getId().toString()+"\",pId:\"t"+pid.toString()+"\",name:\""+k.getName()+"\",isParent:true,font:{'color':'"+color+"'}";
+                    }
+                    if(k.getId().equals(nid)){
+                        snodes =  klassRep.getnode(nid);
+                        tree = tree+",open:true},";
+//                        for(int m = 0;m<nodes.size();m++){
+//                            if(klassRep.getrelation(nodes.get(m).getId()) != null){
+//                                //System.out.println(klassRep.getrelation(subnode.get(i).getId()));
+//                                color = "#000000";
+//                            }
+//                            else {
+//                                color = "#ff0000";
+//                            }
+//                            tree = tree+"{id:\"t"+nodes.get(m).getId().toString()+"\",pId:\"t"+nid+"\",name:\""+nodes.get(m).getName()+"\",isParent:true,font:{'color':'"+color+"'}}";
+//                            if(m!=nodes.size()-1){
+//                                tree=tree+",";
+//                            }
+//                        }
+                        //break;
+                    }
+                    else {
+                        tree = tree+"},";
+                    }
+
+                }
+                nodes = snodes;
+                pid = nid;
+            }
+
+            tree = tree.substring(0,tree.length()-1)+"]";
+            System.out.println(tree);
+            return tree;
+        }
+        else {
+            id = id.substring(1);
+            List<Klass> subnode = klassRep.getnode(Long.parseLong(id));
+            int len = subnode.size();
+            int i = 0;
+            String color="";
+            for(i = 0;i<len;i++){
+
+                if(klassRep.getrelation(subnode.get(i).getId()) != null){
+                    //System.out.println(klassRep.getrelation(subnode.get(i).getId()));
+                    color = "#000000";
+                }
+                else {
+                    color = "#ff0000";
+                }
+                tree = tree+"{id:\"t"+subnode.get(i).getId().toString()+"\",name:\""+subnode.get(i).getName()+"\",isParent:true,font:{'color':'"+color+"'}}";
+                if(i!=len-1){
+                    tree=tree+",";
+                }
+            }
+            tree = tree+"]";
+            System.out.println(tree);
+            return tree;
+        }
     }
 
 }
