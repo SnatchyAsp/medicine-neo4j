@@ -163,7 +163,7 @@
                             // for (var i=0;i<cy.nodes().length;i++){
                             //     cy.$(cy.nodes()[i]).lock();
                             // }
-                            alert(result.length)
+
                             for(var key in result){
                                 if(key == "return"){
                                     continue
@@ -236,8 +236,8 @@
             cy.add(tempnode)
             cy.add(tempedge)
             cy.layout({
-                name:"klay",
-                nodeDimensionsIncludeLabels: true
+                name:"concentric",
+                nodeDimensionsIncludeLabels: false
             }).run()
             // for (var i=0;i<cy.nodes().length;i++){
             //     cy.$(cy.nodes()[i]).unlock();
@@ -330,7 +330,8 @@
                     selector: 'node',
                     style: {
                         'background-color': '#666',
-                        'label': 'data(name)'
+                        'label': 'data(name)',
+                        'size':36
                     }
                 },
                 {
@@ -610,8 +611,8 @@
 
 
                 cy.layout({
-                    name:"klay",
-                    nodeDimensionsIncludeLabels: true,
+                    name:"concentric",
+                    nodeDimensionsIncludeLabels: false,
                     nodeOverlap: 1,
                 }).run()
 
