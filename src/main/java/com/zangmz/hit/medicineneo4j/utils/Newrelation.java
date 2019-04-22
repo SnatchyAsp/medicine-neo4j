@@ -114,11 +114,17 @@ public class Newrelation {
     public static class info{
         public NewNode subject = new NewNode();
         public NewNode object = new NewNode();
-        private String rel_name,type_name,subject_name,object_name,info;
-        private String rels;
+        private String rel_name,type_name,subject_name,object_name,info,allinfo;
+        private String rels,all_rels;
+        private int cnt;
         public String getInfo(){
             String ans="";
-            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Type:"+this.type_name+"<br>"+rels;
+            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Rel_name:"+this.rel_name+"<br>"+"Type:"+this.type_name+"<br>"+rels;
+            return ans;
+        }
+        public String getAllinfo(){
+            String ans="";
+            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Rel_name:"+this.rel_name+"<br>"+"Type:"+this.type_name+"<br>"+all_rels;
             return ans;
         }
         public void setRel_name(String rel_name){
@@ -144,7 +150,15 @@ public class Newrelation {
                 info a = dic.get(key);
                 String old_rels = a.getRels();
                 arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
-                a.setRels(old_rels+"<br><br>"+rel.getinfo());
+                if(a.getCnt()<2){
+                    a.setRels(old_rels+"<br><br>"+rel.getinfo());
+                    a.setCnt(a.getCnt()+1);
+                    a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
+                }
+                else{
+                    a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
+                }
+
             }
             else{
                 info a = new info();
@@ -154,6 +168,8 @@ public class Newrelation {
                 a.setType_name(type_name);
                 arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
                 a.setRels(rel.getinfo());
+                a.setCnt(1);
+                a.setAll_rels(rel.getinfo());
                 a.setObject_name(obj_name);
                 a.setSubject_name(sub_name);
                 dic.put(key, a);

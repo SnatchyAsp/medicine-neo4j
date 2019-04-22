@@ -196,6 +196,7 @@
         function query(){
             cy.nodes().removeClass("highlight")
             cy.edges().removeClass("highlight")
+
             $.ajax({
                     url : "/pmo2/getRelation",
                     type:"post",
@@ -222,6 +223,7 @@
                                 if(key == "return"){
                                     continue
                                 }
+                                console.log(result[key])
                                 tempnode.push({
                                     data: {
                                         name:result[key]["object"]["name"],
@@ -244,10 +246,13 @@
                                         target:result[key]["object"]["info"],
                                         id:result[key]["subject"]["info"]+result[key]["object"]["info"]+result[key]["rel_name"]+result[key]["type_name"],
                                         info:result[key]["info"],
+                                        rel:result[key]["rel"],
+                                        all_rels:result[key]["all_rels"],
                                         type_name:result[key]["type_name"],
                                         rel_name:result[key]["rel_name"]
                                     }
                                 })
+                                console.log()
                                 // if(cy.nodes('[id=\"'+result[key]["object"]["name"]+"\"]").length==0) {
                                 //     cy.add({
                                 //         data:{
@@ -425,8 +430,8 @@
                 {
                     selector: 'edge[type_name="umls_pcnn"]',
                     style: {
-                        'line-style':'dashed',
-                        'line-dash-pattern':[2,2]
+                        'line-style':'solid'
+
                     }
                 },
                 {
@@ -436,11 +441,90 @@
                     }
                 },
                 {
+                    selector: 'edge[rel_name="LOCATION_OF"]',
+                    style: {
+                        'line-color':'rgb(254,67,101)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="PRECEDES"]',
+                    style: {
+                        'line-color':'rgb(252,157,154)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="STIMULATES"]',
+                    style: {
+                        'line-color':'rgb(249,205,173)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="PRODUCES"]',
+                    style: {
+                        'line-color':'rgb(200,200,169)',
+                    }
+                },{
+                    selector: 'edge[rel_name="TREATS"]',
+                    style: {
+                        'line-color':'rgb(131,175,155)',
+                    }
+                },{
+                    selector: 'edge[rel_name="PART_OF"]',
+                    style: {
+                        'line-color':'rgb(38,188,213)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="ISA"]',
+                    style: {
+                        'line-color':'rgb(167,220,224)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="CAUSES"]',
+                    style: {
+                        'line-color':'rgb(100,107,48)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="USES"]',
+                    style: {
+                        'line-color':'rgb(119,52,96)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="INHIBITS"]',
+                    style: {
+                        'line-color':'rgb(148,41,35)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="COEXISTS_WITH"]',
+                    style: {
+                        'line-color':'rgb(78,29,76)',
+
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="AFFECTS"]',
+                    style: {
+                        'line-color':'rgb(82,75,46)',
+                    }
+                },
+                {
+                    selector: 'edge[rel_name="MANIFESTATION_OF"]',
+                    style: {
+                        'line-color':'rgb(87,105,110)',
+                    }
+                },
+
+
+                {
                     selector: 'edge.highlight',
                     style: {
-                        'width': 5,
-                        'line-color': '#444',
-                        'target-arrow-color': '#444',
+                        'width': 12,
+                        // 'line-color': '#444',
+                        // 'target-arrow-color': '#444',
                         'optical':0.6
                     }
                 }
@@ -453,62 +537,7 @@
         });
         query()
         document.addEventListener('DOMContentLoaded', function (){
-            // var showinfo_node = function(n,x,y){
-            //     var info_node =cy.getElementById('info')
-            //     var x_pos = info_node.position("x")
-            //     var y_pos = info_node.position("y")
-            //     cy.remove(info_node);
-            //     cy.add({
-            //         data:{
-            //             id:"info",
-            //             label:n.data("info")
-            //         },
-            //         position: {
-            //             x: x,
-            //             y: y
-            //         }
-            //     })
-            //     var tempnode = cy.getElementById("info");
-            //     tempnode.layout({
-            //         name:"preset"
-            //     }).run();
-            //
-            // }
-            // var showinfo_edge = function(n,x,y){
-            //     var info_node =cy.getElementById('info')
-            //     var x_pos = info_node.position("x")
-            //     var y_pos = info_node.position("y")
-            //     cy.remove(cy.getElementById('info'));
-            //     cy.add({
-            //         data:{
-            //             id:"info",
-            //             label:n.data("detail")
-            //         },
-            //         position: {
-            //             x: x,
-            //             y: y
-            //         }
-            //     })
-            //     var tempedge = cy.getElementById('info');
-            //     tempedge.layout({
-            //         name:"preset"
-            //     }).run();
-            //
-            // }
-            // cy.on('click','node[ntype="real]',function(evt){
-            //     var temppnode = cy.getElementById(this.id());
-            //     var x = evt.position.x
-            //     var y = evt.position.y
-            //     showinfo_node(temppnode,x,y);
-            // })
-            //
-            //
-            // cy.on('click','edge[ntype="edge"]',function(evt){
-            //     var temppedge = cy.getElementById(this.id());
-            //     var x = evt.position.x
-            //     var y = evt.position.y
-            //     showinfo_edge(temppedge,x,y);
-            // })
+
             var makeTippy = function(node,evt){
                 return tippy( node.popperRef(
                 ), {
@@ -550,14 +579,32 @@
             });
             cy.on("mouseover",'ele',function (evt) {
                 hideAllTippies()
-                console.log(cy.extent())
+                // console.log(cy.extent())
+
                 var anode = cy.getElementById(this.id())
+                console.log(anode)
                 var temptippy = makeTippy(anode,evt)
                 anode.data('tippy', temptippy);
                 temptippy.show()
             })
+            var tappedBefore;
+            var tappedTimeout;
+            cy.on('tap', function(event) {
+                var tappedNow = event.target;
+                if (tappedTimeout && tappedBefore) {
+                    clearTimeout(tappedTimeout);
+                }
+                if(tappedBefore === tappedNow) {
+                    console.log("111111111")
+                    tappedNow.trigger('doubleTap');
+                    tappedBefore = null;
+                } else {
+                    tappedTimeout = setTimeout(function(){ tappedBefore = null; }, 300);
+                    tappedBefore = tappedNow;
+                }
+            });
+            cy.on('doubleTap','node',function(evt){
 
-            cy.on('click','node',function(evt){
                 cy.nodes().removeClass("highlight")
                 cy.edges().removeClass("highlight")
                 var temppnode = cy.getElementById(this.id());
@@ -608,6 +655,7 @@
                                         ntype:"real"
                                     }
                                 })
+                                console.log(result[key])
                                 tempedge.push({
                                     data:{
                                         source:result[key]["subject"]["info"],
