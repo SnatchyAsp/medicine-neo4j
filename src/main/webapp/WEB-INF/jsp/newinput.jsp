@@ -111,7 +111,7 @@
                     </div>
                     <div class="col-sm-7">
                         <label><input name="umls_pcnn" type="checkbox" value="true" checked/>umls_pcnn&nbsp;&nbsp;</label>
-                        <label><input name="umls_rel" type="checkbox"  value="true"/>umls_rel&nbsp;&nbsp;</label>
+                        <label><input name="umls_rel" type="checkbox" value="true">umls_rel&nbsp;&nbsp;</label>
                         <%--<label><input name="pmoz_rel" type="checkbox"  value="true" checked/>pmoz_rel&nbsp;&nbsp;</label>--%>
                         <%--<label><input name="subclass_of" type="checkbox"  value="true" checked/>subclass_of&nbsp;&nbsp;</label>--%>
                     </div>

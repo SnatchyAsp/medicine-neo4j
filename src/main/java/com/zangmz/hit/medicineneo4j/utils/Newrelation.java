@@ -116,7 +116,7 @@ public class Newrelation {
         public NewNode object = new NewNode();
         private String rel_name,type_name,subject_name,object_name,info,allinfo;
         private String rels,all_rels;
-        private int cnt;
+        private int cnt,all_cnt;
         public String getInfo(){
             String ans="";
             ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Rel_name:"+this.rel_name+"<br>"+"Type:"+this.type_name+"<br>"+rels;
@@ -153,10 +153,12 @@ public class Newrelation {
                 if(a.getCnt()<2){
                     a.setRels(old_rels+"<br><br>"+rel.getinfo());
                     a.setCnt(a.getCnt()+1);
+                    a.setAll_cnt(a.getAll_cnt()+1);
                     a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
                 }
                 else{
                     a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
+                    a.setAll_cnt(a.getAll_cnt()+1);
                 }
 
             }
@@ -169,6 +171,7 @@ public class Newrelation {
                 arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
                 a.setRels(rel.getinfo());
                 a.setCnt(1);
+                a.setAll_cnt(1);
                 a.setAll_rels(rel.getinfo());
                 a.setObject_name(obj_name);
                 a.setSubject_name(sub_name);

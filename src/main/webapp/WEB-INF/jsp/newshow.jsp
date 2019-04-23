@@ -85,10 +85,13 @@
         });
         //-->
     </SCRIPT>
+
 </head>
 <%
     String temp = (String)pageContext.findAttribute("webinfo") ;
     Webinfo webinfo = com.alibaba.fastjson.JSON.parseObject(temp, Webinfo.class);
+    System.out.println(webinfo.isUmls_pcnn());
+    System.out.println(webinfo.isUmls_rel());
 %>
 <%--<%--%>
 <%--    String testd = (String)pageContext.findAttribute("rel");--%>
@@ -98,6 +101,9 @@
 <%--    Integer all_returncode = (Integer) pageContext.findAttribute("all_returncode");--%>
 <%--    String all_returnmessage = (String)pageContext.findAttribute("all_returnmessage");--%>
 <%--%>--%>
+<script type="text/javascript">
+
+</script>
 <body>
 <div>
 
@@ -144,8 +150,8 @@
                         </div>
                     </div>
                     <div class="col-sm-10">
-                        <label><input id="umls_pcnn" name="umls_pcnn" type="checkbox"  value="true" checked />umls_pcnn&nbsp;&nbsp;</label>
-                        <label><input id="umls_rel" name="umls_rel" type="checkbox"  value="true"/>umls_rel&nbsp;&nbsp;</label>
+                        <label><input id="umls_pcnn" name="umls_pcnn" type="checkbox"    />umls_pcnn&nbsp;&nbsp;</label>
+                        <label><input id="umls_rel" name="umls_rel" type="checkbox" />umls_rel&nbsp;&nbsp;</label>
                         <%--<label><input id="pmoz_rel" name="pmoz_rel" type="checkbox" value="true" checked/>pmoz_rel&nbsp;&nbsp;</label>--%>
                         <%--<label><input id="subclass_of" name="subclass_of" type="checkbox"  value="true" checked/>subclass_of&nbsp;&nbsp;</label>--%>
                     </div>
@@ -191,6 +197,14 @@
 </div>
 <div class="col-sm-offset-3 col-sm-9" id="cy">
     <script type="text/javascript">
+        var a=<%=webinfo.isUmls_pcnn()%>
+        var b=<%=webinfo.isUmls_rel()%>
+        if(a){
+            $("input[name='umls_pcnn']").attr("checked",true);
+        }
+        if(b){
+            $("input[name='umls_rel']").attr("checked",true);
+        }
         var tempnode=[]
         var tempedge=[]
         function query(){
@@ -202,10 +216,10 @@
                     type:"post",
                     data:{'head_entity':$('#head_entity').val(),
                         'tail_entity':$('#tail_entity').val(),
-                        'umls_pcnn':$('#umls_pcnn').val(),
-                        'umls_rel':$('#umls_rel').val(),
-                        'subclass_of':$('#subclass_of').val(),
-                        'pmoz_rel':$('#pmoz_rel').val()},
+                        'umls_pcnn':$('#umls_pcnn').attr('checked'),
+                        'umls_rel':$('#umls_rel').attr('checked'),
+                        'subclass_of':$('#subclass_of').attr('checked'),
+                        'pmoz_rel':$('#pmoz_rel').attr('checked')},
                     async : false,
                     dataType : "json",        //返回数据形式为json
                     success : function(result){
@@ -246,13 +260,15 @@
                                         target:result[key]["object"]["info"],
                                         id:result[key]["subject"]["info"]+result[key]["object"]["info"]+result[key]["rel_name"]+result[key]["type_name"],
                                         info:result[key]["info"],
+                                        allinfo:result[key]["allinfo"],
                                         rel:result[key]["rel"],
                                         all_rels:result[key]["all_rels"],
                                         type_name:result[key]["type_name"],
-                                        rel_name:result[key]["rel_name"]
+                                        rel_name:result[key]["rel_name"],
+                                        rel_info:result[key]["rel_name"]+"  ("+result[key]["all_cnt"]+")"
                                     }
                                 })
-                                console.log()
+
                                 // if(cy.nodes('[id=\"'+result[key]["object"]["name"]+"\"]").length==0) {
                                 //     cy.add({
                                 //         data:{
@@ -279,8 +295,9 @@
                                 //
                                 // }
                             }
-                            console.log(tempedge)
+
                         }
+                        console.log(tempedge)
 
 
 
@@ -390,6 +407,7 @@
                     style: {
                         'background-color': '#666',
                         'label': 'data(name)',
+                        'text-valign': 'center',
                         'size':36
                     }
                 },
@@ -409,7 +427,7 @@
                         'target-arrow-color': '#ccc',
                         'target-arrow-shape': 'triangle',
                         'optical':0.4,
-                        'label':'data(rel_name)'
+                        'label':'data(rel_info)'
                     }
                 },
                 {
@@ -423,7 +441,7 @@
                     selector: 'edge[type_name="umls_rel"]',
                     style: {
                         'line-style':'dashed',
-                        'line-dash-pattern':[5,5],
+                        'line-dash-pattern':[20,20],
                         'line-cap':'round'
                     }
                 },
@@ -444,6 +462,7 @@
                     selector: 'edge[rel_name="LOCATION_OF"]',
                     style: {
                         'line-color':'rgb(254,67,101)',
+
                     }
                 },
                 {
@@ -522,7 +541,7 @@
                 {
                     selector: 'edge.highlight',
                     style: {
-                        'width': 12,
+                        'width': 10,
                         // 'line-color': '#444',
                         // 'target-arrow-color': '#444',
                         'optical':0.6
@@ -582,7 +601,7 @@
                 // console.log(cy.extent())
 
                 var anode = cy.getElementById(this.id())
-                console.log(anode)
+
                 var temptippy = makeTippy(anode,evt)
                 anode.data('tippy', temptippy);
                 temptippy.show()
@@ -595,7 +614,6 @@
                     clearTimeout(tappedTimeout);
                 }
                 if(tappedBefore === tappedNow) {
-                    console.log("111111111")
                     tappedNow.trigger('doubleTap');
                     tappedBefore = null;
                 } else {
@@ -626,7 +644,6 @@
                     dataType : "json",
                     success : function(result) {
 
-                        console.log(result)
                         if(result["return"]["subject_name"]!="0"){
                             alert(result["return"]["object_name"])
                         }
@@ -634,7 +651,7 @@
                             // for (var i=0;i<cy.nodes().length;i++){
                             //     cy.$(cy.nodes()[i]).lock();
                             // }
-                            console.log(result)
+
                             for(var key in result){
                                 if(key == "return"){
                                     continue
@@ -662,8 +679,10 @@
                                         target:result[key]["object"]["info"],
                                         id:result[key]["subject"]["info"]+result[key]["object"]["info"]+result[key]["rel_name"]+result[key]["type_name"],
                                         info:result[key]["info"],
+                                        allinfo:result[key]["allinfo"],
                                         type_name:result[key]["type_name"],
-                                        rel_name:result[key]["rel_name"]
+                                        rel_name:result[key]["rel_name"],
+                                        rel_info:result[key]["rel_name"]+"  ("+result[key]["all_cnt"]+")"
                                     }
                                 })
                                 // if(cy.nodes('[id=\"'+result[key]["object"]["name"]+"\"]").length==0) {
@@ -692,7 +711,7 @@
                                 //
                                 // }
                             }
-                            console.log(temppnode)
+
                         }
                     },
                     error : function(errorMsg) {
