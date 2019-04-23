@@ -762,9 +762,10 @@
 
         })
     </script>
-    <div>
-        <textarea id=txtComments style="overflow:scroll;width:900px;height:150px;"></textarea>
-    </div>
+
+</div>
+<div style="width:900px;height:150px">
+    <textarea id=txtComments style="overflow:scroll;width:900px;height:150px;position: absolute;right: 242px;top: 670px"></textarea>
 </div>
 
 </body>
