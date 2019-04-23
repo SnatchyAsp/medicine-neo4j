@@ -286,20 +286,6 @@ public class PMO2Service {
                     if(k.getId().equals(nid)){
                         snodes =  klassRep.getnode(nid);
                         tree = tree+",open:true},";
-//                        for(int m = 0;m<nodes.size();m++){
-//                            if(klassRep.getrelation(nodes.get(m).getId()) != null){
-//                                //System.out.println(klassRep.getrelation(subnode.get(i).getId()));
-//                                color = "#000000";
-//                            }
-//                            else {
-//                                color = "#ff0000";
-//                            }
-//                            tree = tree+"{id:\"t"+nodes.get(m).getId().toString()+"\",pId:\"t"+nid+"\",name:\""+nodes.get(m).getName()+"\",isParent:true,font:{'color':'"+color+"'}}";
-//                            if(m!=nodes.size()-1){
-//                                tree=tree+",";
-//                            }
-//                        }
-                        //break;
                     }
                     else {
                         tree = tree+"},";
@@ -327,7 +313,7 @@ public class PMO2Service {
                     color = "#000000";
                 }
                 else {
-                    color = "#ff0000";
+                    color = "#C0C0C0";
                 }
                 tree = tree+"{id:\"t"+subnode.get(i).getId().toString()+"\",name:\""+subnode.get(i).getName()+"\",isParent:true,font:{'color':'"+color+"'}}";
                 if(i!=len-1){
