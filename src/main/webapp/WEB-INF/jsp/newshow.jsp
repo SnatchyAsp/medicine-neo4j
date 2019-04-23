@@ -160,7 +160,7 @@
                     </div>
 
                 </form>
-                <form class="form-horizontal col-sm-1" action="input" method="post" style="position: relative;bottom: 35px;right: 150px">
+                <form class="form-horizontal col-sm-1" action="input" method="post" style="position: relative;bottom: 35px;right: 27%">
                     <div class="form-group">
                         <div>
                             <button type="submit" class="btn btn-default">clear</button>
@@ -764,8 +764,8 @@
     </script>
 
 </div>
-<div style="width:900px;height:150px">
-    <textarea id=txtComments style="overflow:scroll;width:900px;height:150px;position: absolute;right: 242px;top: 670px"></textarea>
+<div style="width:900px;height:150px" class="col-sm-offset-3">
+    <textarea id=txtComments style="overflow:scroll;width:900px;height:150px;position: relative;top: -480px"></textarea>
 </div>
 
 </body>
