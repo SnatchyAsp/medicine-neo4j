@@ -55,19 +55,19 @@ public class Newrelation {
                 ans += name;
             }
             if(subclass_of!=null){
-                ans += "<br>Subclass of:";
+                ans += "\nSubclass of:";
                 ans+=subclass_of;
             }
             if(tree_number!=null){
-                ans+="<br>Tree number:";
+                ans+="\nTree number:";
                 ans+=tree_number;
             }
             if(mCID!=null){
-                ans+="<br>MTID:";
+                ans+="\nMTID:";
                 ans+=mCID;
             }
             if(mTID!=null) {
-                ans += "<br>MCID:";
+                ans += "\nMCID:";
                 ans += mTID;
             }
             return ans;
@@ -100,7 +100,7 @@ public class Newrelation {
         public String getinfo(){
             String ans="";
             if(pmid!=null){
-                ans+="Pmid:"+pmid+"<br>";
+                ans+="Pmid:"+pmid+"\n";
             }
             if(sentence!=null){
                 ans+="Sentence:"+sentence;
@@ -119,12 +119,12 @@ public class Newrelation {
         private int cnt,all_cnt;
         public String getInfo(){
             String ans="";
-            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Rel_name:"+this.rel_name+"<br>"+"Type:"+this.type_name+"<br>"+rels;
+            ans+="Subject:"+this.subject_name+"\n"+"Object:"+this.object_name+"\n"+"Rel_name:"+this.rel_name+"\n"+"Type:"+this.type_name+"\n"+rels;
             return ans;
         }
         public String getAllinfo(){
             String ans="";
-            ans+="Subject:"+this.subject_name+"<br>"+"Object:"+this.object_name+"<br>"+"Rel_name:"+this.rel_name+"<br>"+"Type:"+this.type_name+"<br>"+all_rels;
+            ans+="Subject:"+this.subject_name+"\n"+"Object:"+this.object_name+"\n"+"Rel_name:"+this.rel_name+"\n"+"Type:"+this.type_name+"\n"+all_rels;
             return ans;
         }
         public void setRel_name(String rel_name){
@@ -151,13 +151,14 @@ public class Newrelation {
                 String old_rels = a.getRels();
                 arelation rel = JSON.toJavaObject(data.getJSONObject("relation"),arelation.class);
                 if(a.getCnt()<2){
-                    a.setRels(old_rels+"<br><br>"+rel.getinfo());
+                    a.setRels(old_rels+"\n\n"+rel.getinfo());
                     a.setCnt(a.getCnt()+1);
                     a.setAll_cnt(a.getAll_cnt()+1);
-                    a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
+                    a.setAll_rels(old_rels+"\n\n"+rel.getinfo());
                 }
                 else{
-                    a.setAll_rels(old_rels+"<br><br>"+rel.getinfo());
+                    old_rels=a.getAll_rels();
+                    a.setAll_rels(old_rels+"\n\n"+rel.getinfo());
                     a.setAll_cnt(a.getAll_cnt()+1);
                 }
 

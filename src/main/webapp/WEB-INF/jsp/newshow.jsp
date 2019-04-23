@@ -90,8 +90,6 @@
 <%
     String temp = (String)pageContext.findAttribute("webinfo") ;
     Webinfo webinfo = com.alibaba.fastjson.JSON.parseObject(temp, Webinfo.class);
-    System.out.println(webinfo.isUmls_pcnn());
-    System.out.println(webinfo.isUmls_rel());
 %>
 <%--<%--%>
 <%--    String testd = (String)pageContext.findAttribute("rel");--%>
@@ -557,54 +555,69 @@
         query()
         document.addEventListener('DOMContentLoaded', function (){
 
-            var makeTippy = function(node,evt){
-                return tippy( node.popperRef(
-                ), {
-                    content: function(){
-                        var div = document.createElement('div');
-                        div.innerHTML = node.data("info");
-                        return div;
-                    },
-                    trigger: 'manual',
-                    arrow: false,
-                    placement: 'bottom',
-                    hideOnClick: false,
-                    multiple: false,
-                    sticky: true,
-                    size:'big'
-                } );
-            };
-            var hideTippy = function(node){
-                var tippy = node.data('tippy');
+            // var makeTippy = function(node,evt){
+            //     return tippy( node.popperRef(
+            //     ), {
+            //         content: function(){
+            //             var div = document.createElement('div');
+            //             div.innerHTML = node.data("info");
+            //             return div;
+            //         },
+            //         trigger: 'manual',
+            //         arrow: false,
+            //         placement: 'bottom',
+            //         hideOnClick: false,
+            //         multiple: false,
+            //         sticky: true,
+            //         size:'big'
+            //     } );
+            // };
+            // var hideTippy = function(node){
+            //     var tippy = node.data('tippy');
+            //
+            //     if(tippy != null){
+            //         tippy.hide();
+            //     }
+            // };
+            //
+            // var hideAllTippies = function(){
+            //     cy.nodes().forEach(hideTippy);
+            //     cy.edges().forEach(hideTippy);
+            // };
+            //
+            // cy.on('tap', function(e){
+            //     if(e.target === cy){
+            //         hideAllTippies();
+            //     }
+            // });
+            //
+            // cy.on('zoom pan', function(e){
+            //     hideAllTippies();
+            // });
+            cy.on("click",'node',function (evt) {
 
-                if(tippy != null){
-                    tippy.hide();
-                }
-            };
+                // hideAllTippies()
 
-            var hideAllTippies = function(){
-                cy.nodes().forEach(hideTippy);
-                cy.edges().forEach(hideTippy);
-            };
-
-            cy.on('tap', function(e){
-                if(e.target === cy){
-                    hideAllTippies();
-                }
-            });
-
-            cy.on('zoom pan', function(e){
-                hideAllTippies();
-            });
-            cy.on("mouseover",'ele',function (evt) {
-                hideAllTippies()
                 // console.log(cy.extent())
 
                 var anode = cy.getElementById(this.id())
+                $("#txtComments").val(anode.data("info"));
+                // var temptippy = makeTippy(anode,evt)
+                // anode.data('tippy', temptippy);
+                // temptippy.show()
+            })
+            cy.on("click",'edge',function (evt) {
 
-                var temptippy = makeTippy(anode,evt)
-                anode.data('tippy', temptippy);
-                temptippy.show()
+                // hideAllTippies()
+
+                // console.log(cy.extent())
+
+                var anode = cy.getElementById(this.id())
+                console.log(anode)
+                $("#txtComments").val(anode.data("allinfo"));
+                // var temptippy = makeTippy(anode,evt)
+                // anode.data('tippy', temptippy);
+                // temptippy.show()
             })
             var tappedBefore;
             var tappedTimeout;
@@ -749,5 +762,9 @@
 
         })
     </script>
+    <div>
+        <textarea id=txtComments style="overflow:scroll;width:900px;height:150px;"></textarea>
+    </div>
 </div>
+
 </body>
